@@ -1,0 +1,23 @@
+* text=auto !eol
+action/editer_url.php -text
+action/urls_actualiser.php -text
+action/urls_liberer.php -text
+action/urls_verrouiller.php -text
+base/urls.php -text
+configuration/type_urls.php -text
+formulaires/editer_url_objet.html -text
+formulaires/editer_url_objet.php -text
+/htaccess.txt -text
+lang/urls_fr.php -text
+/plugin.xml -text
+prive/exec/controler_urls.html -text
+urls/arbo.php -text
+urls/generer_url_forum.php -text
+urls/html.php -text
+urls/index.php -text
+urls/libres.php -text
+urls/propres.php -text
+urls/propres2.php -text
+urls/propres_qs.php -text
+urls/standard.php -text
+/urls_pipeline.php -text
