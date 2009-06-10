@@ -11,10 +11,10 @@ formulaires/editer_url_objet.php -text
 lang/urls_fr.php -text
 /plugin.xml -text
 prive/exec/controler_urls.html -text
-skins/basic/images/url-16.png -text
-skins/basic/images/url-24.png -text
-skins/spip/images/url-16.png -text
-skins/spip/images/url-24.png -text
+prive/skins/basic/images/url-16.png -text
+prive/skins/basic/images/url-24.png -text
+prive/skins/spip/images/url-16.png -text
+prive/skins/spip/images/url-24.png -text
 urls/arbo.php -text
 urls/generer_url_forum.php -text
 urls/html.php -text
