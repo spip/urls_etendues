@@ -4,7 +4,8 @@ action/urls_actualiser.php -text
 action/urls_liberer.php -text
 action/urls_verrouiller.php -text
 base/urls.php -text
-configuration/type_urls.php -text
+formulaires/configurer_type_urls.html -text
+formulaires/configurer_type_urls.php -text
 formulaires/editer_url_objet.html -text
 formulaires/editer_url_objet.php -text
 /htaccess.txt -text
