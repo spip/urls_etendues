@@ -11,7 +11,7 @@ formulaires/editer_url_objet.php -text
 /htaccess.txt -text
 lang/urls_fr.php -text
 /plugin.xml -text
-prive/exec/controler_urls.html -text
+prive/squelettes/contenu/controler_urls.html -text
 prive/themes/basic/images/url-16.png -text
 prive/themes/basic/images/url-24.png -text
 prive/themes/spip/images/url-16.png -text
