@@ -78,5 +78,6 @@ urls/libres.php -text
 urls/propres.php -text
 urls/propres2.php -text
 urls/propres_qs.php -text
+urls/simple.php -text
 urls/standard.php -text
 /urls_pipeline.php -text
