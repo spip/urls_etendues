@@ -8,6 +8,8 @@ formulaires/configurer_urls.html -text
 formulaires/configurer_urls.php -text
 formulaires/configurer_urls_arbo.html -text
 formulaires/configurer_urls_arbo_fonctions.php -text
+formulaires/configurer_urls_propres.html -text
+formulaires/configurer_urls_propres_fonctions.php -text
 formulaires/editer_url_objet.html -text
 formulaires/editer_url_objet.php -text
 /htaccess.txt -text
