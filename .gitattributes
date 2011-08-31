@@ -6,6 +6,8 @@ action/urls_verrouiller.php -text
 base/urls.php -text
 formulaires/configurer_urls.html -text
 formulaires/configurer_urls.php -text
+formulaires/configurer_urls_arbo.html -text
+formulaires/configurer_urls_arbo_fonctions.php -text
 formulaires/editer_url_objet.html -text
 formulaires/editer_url_objet.php -text
 /htaccess.txt -text
@@ -66,6 +68,7 @@ lang/urls_tr.php -text
 lang/urls_uk.php -text
 lang/urls_wa.php -text
 prive/squelettes/contenu/configurer_urls.html -text
+prive/squelettes/contenu/configurer_urls_fonctions.php -text
 prive/squelettes/contenu/controler_urls.html -text
 prive/themes/spip/images/url-16.png -text
 prive/themes/spip/images/url-24.png -text
