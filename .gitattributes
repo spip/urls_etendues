@@ -65,6 +65,7 @@ lang/urls_th.php -text
 lang/urls_tr.php -text
 lang/urls_uk.php -text
 lang/urls_wa.php -text
+prive/squelettes/contenu/configurer_urls.html -text
 prive/squelettes/contenu/controler_urls.html -text
 prive/themes/spip/images/url-16.png -text
 prive/themes/spip/images/url-24.png -text
