@@ -75,6 +75,7 @@ prive/objets/liste/urls.html -text
 prive/squelettes/contenu/configurer_urls.html -text
 prive/squelettes/contenu/configurer_urls_fonctions.php -text
 prive/squelettes/contenu/controler_urls.html -text
+prive/squelettes/navigation/controler_urls.html -text
 prive/style_prive_plugin_urls.html -text
 prive/themes/spip/images/url-16.png -text
 prive/themes/spip/images/url-24.png -text
