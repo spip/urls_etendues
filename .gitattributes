@@ -14,6 +14,7 @@ formulaires/configurer_urls_propres_fonctions.php -text
 formulaires/editer_url_objet.html -text
 formulaires/editer_url_objet.php -text
 /htaccess.txt -text
+lang/paquet-urls.xml -text
 lang/urls.xml -text
 lang/urls_ar.php -text
 lang/urls_ast.php -text
