@@ -105,4 +105,5 @@ urls/propres_qs.php -text
 urls/simple.php -text
 urls/standard.php -text
 /urls_administrations.php -text
+/urls_ieconfig.php -text
 /urls_pipeline.php -text
