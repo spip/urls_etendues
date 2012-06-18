@@ -16,6 +16,7 @@ formulaires/editer_url_objet.php -text
 /htaccess.txt -text
 lang/paquet-urls.xml -text
 lang/paquet-urls_ar.php -text
+lang/paquet-urls_de.php -text
 lang/paquet-urls_en.php -text
 lang/paquet-urls_fa.php -text
 lang/paquet-urls_it.php -text
