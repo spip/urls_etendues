@@ -1,6 +1,6 @@
 <?php
 // This is a SPIP language file  --  Ceci est un fichier langue de SPIP
-// extrait automatiquement de http://trad.spip.net/tradlang_module/urls?lang_cible=fr_tu
+// extrait automatiquement de http://trad.spip.net/tradlang_module/urls?lang_cible=fr_fem
 // ** ne pas modifier le fichier **
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
@@ -9,16 +9,17 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// A
 	'actualiser_toutes' => 'Mettre à jour toutes les URLs',
-	'actualiser_toutes_explication' => 'Tu peux recalculer les URLs.
-Si une URL a changé, une nouvelle entrée sera créée (sans perdre les URLs déjà présentes et sans affecter les URLs définies manuellement.',
+	'actualiser_toutes_explication' => 'Vous pouvez recalculer les URLs.
+		Si une URL a changé, une nouvelle entrée sera créée (sans perdre les URLs déjà
+		présentes et sans affecter les URLs définies manuellement.',
 
 	// B
 	'bouton_supprimer_url' => 'Supprimer cette URL',
 
 	// E
-	'erreur_arbo_2_segments_max' => 'Tu ne peux pas utiliser plus de deux segments d’URL pour un objet',
+	'erreur_arbo_2_segments_max' => 'Vous ne pouvez pas utiliser plus de deux segments d’URL pour un objet',
 	'erreur_config_url_forcee' => 'La configuration des URLs est forcée dans le fichier <tt>mes_options.php</tt>.',
-	'explication_editer' => 'La gestion avancée des URLs te permet d’éditer l’URL des pages de chaque objet éditorial, et de gérer l’historique de leur évolution.',
+	'explication_editer' => 'La gestion avancée des URLs vous permet d’éditer l’URL des pages de chaque objet éditorial, et de gérer l’historique de leur évolution.',
 
 	// I
 	'icone_configurer_urls' => 'Configurer les URLs',
@@ -44,7 +45,7 @@ Si une URL a changé, une nouvelle entrée sera créée (sans perdre les URLs d�
 	'liste_des_urls' => 'Toutes les URLs',
 
 	// T
-	'texte_type_urls' => 'Tu peux choisir ci-dessous le mode de calcul de l’adresse des pages.',
+	'texte_type_urls' => 'Vous pouvez choisir ci-dessous le mode de calcul de l’adresse des pages.',
 	'texte_type_urls_attention' => 'Attention ce réglage ne fonctionnera que si le fichier @htaccess@ est correctement installé à la racine du site.',
 	'texte_urls_nb_max_car' => 'Si le titre est plus long, il sera coupé.',
 	'texte_urls_nb_min_car' => 'Si le titre est plus court, c’est son Numéro identifiant qui sera utilisé.',
@@ -66,7 +67,7 @@ Si une URL a changé, une nouvelle entrée sera créée (sans perdre les URLs d�
 	'url_ajoutee' => 'L’URL a été ajoutée',
 
 	// V
-	'verifier_url_nettoyee' => 'L’URL a été corrigée, tu peux vérifier avant de l’enregistrer.',
+	'verifier_url_nettoyee' => 'L’URL a été corrigée, vous pouvez vérifier avant de l’enregistrer.',
 	'verrouiller_url' => 'Verrouiller'
 );
 
