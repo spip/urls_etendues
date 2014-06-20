@@ -275,7 +275,7 @@ function renseigner_url_arbo($type,$id_objet){
 function declarer_url_arbo($type, $id_objet) {
 	static $urls=array();
 	// utiliser un cache memoire pour aller plus vite
-	if(!is_null($C=cache_me())) return$C;
+	if(!is_null($C=cache_me())) return $C;
 	
 	// Se contenter de cette URL si elle existe ;
 	// sauf si on invoque par "voir en ligne" avec droit de modifier l'url
