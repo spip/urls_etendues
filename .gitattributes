@@ -55,6 +55,7 @@ lang/urls_ro.php -text
 lang/urls_ru.php -text
 lang/urls_sk.php -text
 lang/urls_tr.php -text
+lang/urls_uk.php -text
 prive/objets/editer/url.html -text
 prive/objets/liste/urls.html -text
 prive/squelettes/contenu/configurer_urls.html -text
