@@ -2,7 +2,6 @@
 action/editer_url.php -text
 action/supprimer_url.php -text
 action/urls_actualiser.php -text
-action/urls_liberer.php -text
 base/urls.php -text
 formulaires/configurer_urls.html -text
 formulaires/configurer_urls.php -text
