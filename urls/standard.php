@@ -22,43 +22,43 @@ define('URLS_STANDARD_EXEMPLE', 'article.php3?id_article=12');
 
 if (!function_exists('generer_url_article')) { // si la place n'est pas prise
 
-// http://code.spip.net/@generer_url_article
+// https://code.spip.net/@generer_url_article
 function generer_url_article($id_article) {
 	return _DIR_RACINE . "article.php3?id_article=$id_article";
 }
 
-// http://code.spip.net/@generer_url_rubrique
+// https://code.spip.net/@generer_url_rubrique
 function generer_url_rubrique($id_rubrique) {
 	return _DIR_RACINE . "rubrique.php3?id_rubrique=$id_rubrique";
 }
 
-// http://code.spip.net/@generer_url_breve
+// https://code.spip.net/@generer_url_breve
 function generer_url_breve($id_breve) {
 	return _DIR_RACINE . "breve.php3?id_breve=$id_breve";
 }
 
-// http://code.spip.net/@generer_url_mot
+// https://code.spip.net/@generer_url_mot
 function generer_url_mot($id_mot) {
 	return _DIR_RACINE . "mot.php3?id_mot=$id_mot";
 }
 
-// http://code.spip.net/@generer_url_site
+// https://code.spip.net/@generer_url_site
 function generer_url_site($id_syndic) {
 	return _DIR_RACINE . "site.php3?id_syndic=$id_syndic";
 }
 
-// http://code.spip.net/@generer_url_auteur
+// https://code.spip.net/@generer_url_auteur
 function generer_url_auteur($id_auteur) {
 	return _DIR_RACINE . "auteur.php3?id_auteur=$id_auteur";
 }
 
-// http://code.spip.net/@generer_url_document
+// https://code.spip.net/@generer_url_document
 function generer_url_document($id_document) {
 	$generer_url_document = charger_fonction("generer_url_document","urls");
 	return $generer_url_document($id_document);
 }
 
-// http://code.spip.net/@recuperer_parametres_url
+// https://code.spip.net/@recuperer_parametres_url
 function recuperer_parametres_url(&$fond, $url) {
 	global $contexte;
 
@@ -110,7 +110,7 @@ function recuperer_parametres_url(&$fond, $url) {
 //
 // le format de definition obsolete oblige a referencer explicitement les forums
 // on prevoit leur inexistence possible par un test sur charger_fonction
-// http://code.spip.net/@generer_url_forum
+// https://code.spip.net/@generer_url_forum
 function generer_url_forum($id, $show_thread=false) {
 	if ($generer_url_externe = charger_fonction("generer_url_forum",'urls',true))
 		return $generer_url_externe($id, $args, $ancre);

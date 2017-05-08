@@ -173,7 +173,7 @@ function url_arbo_type($type){
  * precedent, un tableau indiquant le titre de l'objet, son type, son id,
  * et doit donner en retour une chaine d'url, sans se soucier de la
  * duplication eventuelle, qui sera geree apres
- * http://code.spip.net/@creer_chaine_url
+ * https://code.spip.net/@creer_chaine_url
  *
  * @param array $x
  * @return array
@@ -198,7 +198,7 @@ function urls_arbo_creer_chaine_url($x) {
 
 /**
  * Boucler sur le parent pour construire l'url complete a partir des segments
- * http://code.spip.net/@declarer_url_arbo_rec
+ * https://code.spip.net/@declarer_url_arbo_rec
  *
  * @param string $url
  * @param string $type
@@ -263,7 +263,7 @@ function renseigner_url_arbo($type,$id_objet){
 /**
  * Retrouver/Calculer l'ensemble des segments d'url d'un objet
  *
- * http://code.spip.net/@declarer_url_arbo
+ * https://code.spip.net/@declarer_url_arbo
  *
  * @param string $type
  * @param int $id_objet
@@ -368,7 +368,7 @@ function declarer_url_arbo($type, $id_objet) {
 /**
  * Generer l'url arbo complete constituee des segments + debut + fin
  *
- * http://code.spip.net/@_generer_url_arbo
+ * https://code.spip.net/@_generer_url_arbo
  *
  * @param string $type
  * @param int $id
@@ -417,7 +417,7 @@ function _generer_url_arbo($type, $id, $args='', $ancre='') {
  * ou decoder cette url si c'est une chaine
  * array([contexte],[type],[url_redirect],[fond]) : url decodee
  *
- * http://code.spip.net/@urls_arbo_dist
+ * https://code.spip.net/@urls_arbo_dist
  *
  * @param string|int $i
  * @param string $entite
