@@ -455,7 +455,7 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 				if (_MARQUEUR_URL) {
 					$fmarqueur = @array_flip(unserialize(_MARQUEUR_URL));
 					preg_match(',^([+][-]|[-+@_]),', $url_propre, $regs);
-					$objet = $regs ? substr($fmarqueur[$regs[1]], 0, n - 1) : 'article';
+					$objet = ($regs ? substr($fmarqueur[$regs[1]], 0, -1) : 'article');
 					$contexte['erreur'] = _T(
 						($objet == 'rubrique' or $objet == 'breve')
 							? 'public:aucune_' . $objet
