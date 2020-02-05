@@ -1,9 +1,9 @@
 <traduction
 	module="urls"
-	id="urls--urls_etendues-90bad"
+	id="urls--urls_etendues-d801a"
 	gestionnaire="salvatore"
 	url="https://trad.spip.net"
-	source="svn://zone.spip.org/spip-zone/_core_/plugins/urls_etendues/lang"
+	source="https://git.spip.net/spip/urls_etendues.git"
 	reference="fr">
 	<langue code="ar" url="https://trad.spip.net/tradlang_module/urls?lang_cible=ar" total="45" traduits="45" relire="0" modifs="0" nouveaux="0" pourcent="100.00">
 		<traducteur nom="George" lien="https://trad.spip.net/auteur/جورج-قندلفت" />
