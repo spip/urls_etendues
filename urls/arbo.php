@@ -78,13 +78,6 @@ defined('CONFIRMER_MODIFIER_URL') || define('CONFIRMER_MODIFIER_URL', false);
  *
  */
 
-include_spip('inc/xcache');
-if (!function_exists('Cache')) {
-	function Cache() {
-		return null;
-	}
-}
-
 $config_urls_arbo = isset($GLOBALS['meta']['urls_arbo']) ? unserialize($GLOBALS['meta']['urls_arbo']) : array();
 if (!defined('_debut_urls_arbo')) {
 	define('_debut_urls_arbo', '');
@@ -370,10 +363,7 @@ function renseigner_url_arbo($type, $id_objet, $contexte = array()) {
  */
 function declarer_url_arbo($type, $id_objet, $contexte = array()) {
 	static $urls = array();
-	// utiliser un cache memoire pour aller plus vite
-	if (!is_null($C = Cache())) {
-		return $C;
-	}
+
 	// contexte de langue si pas defini, en fonction de la configuration
 	if (!isset($contexte['langue'])) {
 		if (!_url_arbo_multilang) {
