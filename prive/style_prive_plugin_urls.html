@@ -12,9 +12,18 @@
 #HTTP_HEADER{Content-Type: text/css; charset=utf-8}
 #HTTP_HEADER{Vary: Accept-Encoding}
 
-.fiche_objet .editer_urls .link {color:#999;display: block;margin-#ENV{right}: 100px;padding-#ENV{left}: 20px;background: url(#CHEMIN_IMAGE{url-16.png}) no-repeat [(#ENV{left}) ]0.4em;background-size:16px;}
-.fiche_objet .editer_urls .link .url {color: #999;text-decoration: none;}
-.fiche_objet .editer_urls .link .edit {visibility: hidden;float: #ENV{right};margin-#ENV{left}:1em;margin-top:-0.5em}
+.fiche_objet .editer_urls .btn_link {
+	color:#999;
+	display: block;
+	margin-#ENV{right}: 100px;
+	padding-#ENV{left}: 20px;
+	background: url(#CHEMIN_IMAGE{url-xx.svg}) no-repeat [(#ENV{left}) ]0.4em;
+	background-size:16px;
+	text-align: #ENV{left};
+}
+.fiche_objet .editer_urls .btn_link .url {color: #999; text-decoration: none; white-space: break-spaces; }
+.fiche_objet .editer_urls .btn_link .edit {visibility: hidden;float: #ENV{right};margin-#ENV{left}:1em;margin-top:-0.5em}
+
 .fiche_objet .editer_urls .edition {display:none;}
 .fiche_objet .editer_urls.open .edition {display:block;}
 .fiche_objet .editer_urls .link:hover,
