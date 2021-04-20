@@ -36,6 +36,7 @@ function action_supprimer_url_dist($arg = null) {
 		if (autoriser('modifierurl', $row['type'], $row['id_objet'])) {
 			include_spip('action/editer_url');
 			url_delete($row['type'], $row['id_objet'], $url, $id_parent);
+			spip_log('on supprime l\'url ' . $url. ' pour ' . $row['type'] .'/'.$row['id_objet']."/$id_parent", "urls");
 		} else {
 			spip_log('supprimer sans autorisation l\'URL ' . $id_parent . "://" . $url, "urls." . _LOG_ERREUR);
 		}

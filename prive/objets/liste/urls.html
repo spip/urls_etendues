@@ -5,10 +5,15 @@
 	type,1
 }})
 ]
-[(#VAL{_AJAX}|defined|oui)
+[(#VAL{_AJAX}|defined|et{#CONST{_AJAX}})
 <script type="text/javascript">if (window.jQuery) jQuery(function(){
+[(#TYPE|urls_is_url_editable{#ID_OBJET}|oui)
 	jQuery('#url-#TYPE-#ID_OBJET').html('[(#ID_OBJET|generer_url_entite{#TYPE,'','',#EVAL{true}}|url_absolue|texte_script)]');
-	jQuery('.formulaire_editer_url_objet .reponse_formulaire_ok').remove();})
+	jQuery('.formulaire_editer_url_objet .reponse_formulaire_ok').remove();
+][(#TYPE|urls_is_url_editable{#ID_OBJET}|non)
+	jQuery('#url-#TYPE-#ID_OBJET').ajaxReload();
+]
+})
 </script>
 ]
 <B_liste_urls>
