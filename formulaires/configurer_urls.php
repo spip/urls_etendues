@@ -37,23 +37,6 @@ function formulaires_configurer_urls_traiter_dist() {
 	return array('message_ok' => _T('config_info_enregistree'), 'editable' => true);
 }
 
-function type_url_choisir($liste, $name, $selected) {
-	$res = '<dl class="choix">';
-	foreach ($liste as $url) {
-		$k = $url[0];
-		$res .= '<dt>'
-			. '<input type="radio" name="' . $name . '" id="' . $name . '_' . $k . '" value="' . $k . '"'
-			. ($selected == $k ? ' checked="checked"' : '')
-			. '/>'
-			. '<label for="' . $name . '_' . $k . '">' . $url[1] . '</label></dt>'
-			. '<dd><tt>' . $url[2] . '</tt></dd>'
-			. "\n";
-	}
-	$res .= "</dl>";
-
-	return $res;
-}
-
 function type_urls_lister() {
 
 	$dispo = array();

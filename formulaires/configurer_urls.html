@@ -17,9 +17,13 @@
 					<label><:urls:texte_type_urls:></label>[
 					<span class='erreur_message'>(#GET{erreurs})</span>
 					]<p class="explication"><:urls:texte_type_urls_attention{htaccess=#GET{htaccess}}:></p>
-
-					[(#ENV*{_urls_dispos}|type_url_choisir{#GET{name},#ENV{#GET{name}}})]
-
+					<BOUCLE_urls_dispos(DATA) {source table, #ENV*{_urls_dispos}}>
+					#SET{val,#VALEUR{0}}
+					<div class="choix">
+						<input type="radio" class="radio" name="#GET{name}" id="#GET{name}_#GET{val}" value="#GET{val}"[(#GET{val}|=={#ENV{#GET{name}}}|oui)checked="checked"] />
+						<label for="#GET{name}_#GET{val}">[(#VALEUR{1})[<br />\(<code>(#VALEUR{2})</code>\)]]</label>
+					</div>
+					</BOUCLE_urls_dispos>
 				</div>
 			</div>
 		</fieldset>
