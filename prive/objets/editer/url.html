@@ -6,7 +6,7 @@
 		<button class="btn btn_link"
 		title="Modifier l'URL"
 		onclick="jQuery(this).closest('.editer_urls').find('.edition').toggle('fast').closest('.editer_urls').delay(300).toggleClass('open');return false;"
-						><span class="btn btn_mini edit"><:bouton_modifier:></span>]
+						><span class="btn btn_mini edit btn_secondaire"><:bouton_modifier:></span>]
 		[(#GET{auth}|non)<span class='btn btn_link'>]
 			<span class="url" id="url-#OBJET-#ID_OBJET">(#ID_OBJET|generer_url_entite{#OBJET,'','',#EVAL{true}}|url_absolue)</span>[(#GET{auth}|?{</button>,</span>})]]
 	[(#AUTORISER{modifier,#OBJET,#ID_OBJET})
