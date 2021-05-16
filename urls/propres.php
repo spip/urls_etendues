@@ -147,7 +147,7 @@ function declarer_url_propre($type, $id_objet) {
 	$trouver_table = charger_fonction('trouver_table', 'base');
 	$desc = $trouver_table(table_objet($type));
 	$table = $desc['table'];
-	$champ_titre = $desc['titre'] ? $desc['titre'] : 'titre';
+	$champ_titre = $desc['titre'] ? $desc['titre'] : '';
 	$col_id = @$desc['key']['PRIMARY KEY'];
 	if (!$col_id) {
 		return false;
@@ -159,8 +159,9 @@ function declarer_url_propre($type, $id_objet) {
 	// Recuperer une URL propre correspondant a l'objet.
 	// mais urls a 1 segment uniquement (pas d'urls /)
 	// de preference avec id_parent=0, puis perma, puis langue='' puis par date desc
+	$select = "U.url, U.date, U.id_parent, U.perma" . ($champ_titre ? ", $champ_titre" : '');
 	$row = sql_fetsel(
-		"U.url, U.date, U.id_parent, U.perma, $champ_titre",
+		$select,
 		"$table AS O LEFT JOIN spip_urls AS U ON (U.type='$type' AND U.id_objet=O.$col_id)",
 		"O.$col_id=$id_objet AND (U.segments IS NULL OR U.segments=1)",
 		'',
@@ -171,8 +172,9 @@ function declarer_url_propre($type, $id_objet) {
 	// en SQLite le left join retourne du vide si il y a une url mais qui ne correspond pas pour la condition sur le segment
 	// on verifie donc que l'objet existe bien avant de sortir ou de creer une url pour cet objet
 	if (!$row) {
+		$select = "'' as url, '' as date, 0 as id_parent, 0 as perma" . ($champ_titre ? ", $champ_titre" : '');
 		$row = sql_fetsel(
-			"'' as url, '' as date, 0 as id_parent, 0 as perma, $champ_titre",
+			$select,
 			"$table AS O",
 			"O.$col_id=$id_objet"
 		);
@@ -181,6 +183,13 @@ function declarer_url_propre($type, $id_objet) {
 	if (!$row) {
 		return '';
 	} # Quand $id_objet n'est pas un numero connu
+
+	// On rajoute le titre
+	if (!$champ_titre) {
+		include_spip('inc/filtres');
+		$row['titre'] = generer_info_entite($id_objet, $type, 'titre');
+		// Faut-il sortir si le titre est vide ?
+	}
 
 	$url_propre = $row['url'];
 
