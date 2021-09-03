@@ -140,18 +140,27 @@ function urls_propres_creer_chaine_url($x) {
 	return $x;
 }
 
-// Trouver l'URL associee a la n-ieme cle primaire d'une table SQL
-
-// https://code.spip.net/@declarer_url_propre
+/**
+ * Trouver l'URL associee a la n-ieme cle primaire d'une table SQL
+ *
+ * @param string $type
+ * @param int $id_objet
+ * @return string|false
+ */
 function declarer_url_propre($type, $id_objet) {
 	$trouver_table = charger_fonction('trouver_table', 'base');
 	$desc = $trouver_table(table_objet($type));
+	// Quand $type ne reference pas une table
+	if (!$desc) {
+		return false;
+	} 
 	$table = $desc['table'];
 	$champ_titre = $desc['titre'] ? $desc['titre'] : 'titre';
-	$col_id = @$desc['key']['PRIMARY KEY'];
+	$col_id = $desc['key']['PRIMARY KEY'] ?? null;
 	if (!$col_id) {
 		return false;
-	} // Quand $type ne reference pas une table
+	}
+
 
 	$id_objet = intval($id_objet);
 
