@@ -295,11 +295,16 @@ function renseigner_url_arbo($type, $id_objet, $contexte = array()) {
 	$urls = array();
 	$trouver_table = charger_fonction('trouver_table', 'base');
 	$desc = $trouver_table(table_objet($type));
+	// Quand $type ne reference pas une table
+	if (!$desc) {
+		return false;
+	} 
 	$table = $desc['table'];
-	$col_id = @$desc['key']['PRIMARY KEY'];
+	$col_id = $desc['key']['PRIMARY KEY'] ?? null;
 	if (!$col_id) {
 		return false;
-	} // Quand $type ne reference pas une table
+	} 
+
 	$id_objet = intval($id_objet);
 
 	$id_parent = (isset($contexte['id_parent'])?$contexte['id_parent']:null);
