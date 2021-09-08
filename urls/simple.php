@@ -57,7 +57,7 @@ function urls_simple_dist($i, &$entite, $args = '', $ancre = '') {
 	}
 	// traiter les injections du type domaine.org/spip.php/cestnimportequoi/ou/encore/plus/rubrique23
 	if ($GLOBALS['profondeur_url'] > 0 and $entite == 'sommaire') {
-		return array(array(), '404');
+		return [[], '404'];
 	}
 
 	// voir s'il faut recuperer le id_* implicite et les &debut_xx;
@@ -73,13 +73,14 @@ function urls_simple_dist($i, &$entite, $args = '', $ancre = '') {
 		return $r;
 	}
 
-	if ($type = _request(_SPIP_PAGE)
+	if (
+		$type = _request(_SPIP_PAGE)
 		and $_id = id_table_objet($type)
 		and $id = _request($_id)
 	) {
 		$contexte[$_id] = $id;
 
-		return array($contexte, $type, null, $type);
+		return [$contexte, $type, null, $type];
 	}
 
 	/*

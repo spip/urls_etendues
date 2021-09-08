@@ -10,7 +10,7 @@
  *  Pour plus de détails voir le fichier COPYING.txt ou l'aide en ligne.   *
 \***************************************************************************/
 
-if (!defined("_ECRIRE_INC_VERSION")) {
+if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
@@ -19,7 +19,6 @@ function action_editer_url_dist() {
 	// Rien a faire ici pour le moment
 	#$securiser_action = charger_fonction('securiser_action', 'inc');
 	#$arg = $securiser_action();
-
 }
 
 /**
@@ -70,10 +69,14 @@ function url_nettoyer($titre, $longueur_maxi, $longueur_min = 0, $separateur = '
 
 	// S'il reste trop de caracteres non latins, les gerer comme wikipedia
 	// avec rawurlencode :
-	if (preg_match_all(",[^a-zA-Z0-9 _]+,", $url, $r, PREG_SET_ORDER)) {
+	if (preg_match_all(',[^a-zA-Z0-9 _]+,', $url, $r, PREG_SET_ORDER)) {
 		foreach ($r as $regs) {
-			$url = substr_replace($url, rawurlencode($regs[0]),
-				strpos($url, $regs[0]), strlen($regs[0]));
+			$url = substr_replace(
+				$url,
+				rawurlencode($regs[0]),
+				strpos($url, $regs[0]),
+				strlen($regs[0])
+			);
 		}
 	}
 
@@ -83,7 +86,7 @@ function url_nettoyer($titre, $longueur_maxi, $longueur_min = 0, $separateur = '
 	}
 
 	// Sinon couper les mots et les relier par des $separateur
-	$mots = preg_split(",[^a-zA-Z0-9_%]+,", $url);
+	$mots = preg_split(',[^a-zA-Z0-9_%]+,', $url);
 	$url = '';
 	foreach ($mots as $mot) {
 		if (!strlen($mot)) {
@@ -142,19 +145,18 @@ function url_insert(&$set, $confirmer, $separateur) {
 
 	# le separateur ne peut pas contenir de /
 	if (strpos($separateur, '/') !== false) {
-		$separateur = "-";
+		$separateur = '-';
 	}
 
 	// Si l'insertion echoue, c'est une violation d'unicite.
-	$where_urllike = 'url LIKE ' . url_sql_quote_like($set['url']) . " AND NOT(type=" . sql_quote($set['type']) . " AND id_objet=" . intval($set['id_objet']) . ")";
-	$where_thisurl = $where_urllike . ($has_parent ? " AND id_parent=" . intval($set['id_parent']) : "");
+	$where_urllike = 'url LIKE ' . url_sql_quote_like($set['url']) . ' AND NOT(type=' . sql_quote($set['type']) . ' AND id_objet=' . intval($set['id_objet']) . ')';
+	$where_thisurl = $where_urllike . ($has_parent ? ' AND id_parent=' . intval($set['id_parent']) : '');
 	if (
 		// si pas de parent defini, il faut que cette url soit unique, independamment de id_parent
 		// il faut utiliser un LIKE pour etre case unsensitive en sqlite
-		(!$has_parent and sql_countsel("spip_urls", $where_urllike))
+		(!$has_parent and sql_countsel('spip_urls', $where_urllike))
 		or @sql_insertq('spip_urls', $set) <= 0
 	) {
-
 		// On veut chiper une ancienne adresse ou prendre celle d'un repertoire deja present?
 		if (
 			(!is_dir(_DIR_RACINE . $set['url']) and !file_exists(_DIR_RACINE . $set['url']))
@@ -163,51 +165,58 @@ function url_insert(&$set, $confirmer, $separateur) {
 			// qui n'est pas permanente
 			and !$vieux['perma']
 			// et dont l'objet a une url plus recente
-			and $courant = sql_fetsel('*', 'spip_urls',
+			and $courant = sql_fetsel(
+				'*',
+				'spip_urls',
 				'type=' . sql_quote($vieux['type']) . ' AND id_objet=' . sql_quote($vieux['id_objet'])
 				. ' AND url<>' . sql_quote($set['url'])
-				. ' AND date>' . sql_quote($vieux['date']), '', 'date DESC', 1)
+				. ' AND date>' . sql_quote($vieux['date']),
+				'',
+				'date DESC',
+				1
+			)
 		) {
 			if ($confirmer and !_request('ok2')) {
-				die("Vous voulez chiper l'URL de l'objet " . $courant['type'] . " "
+				die("Vous voulez chiper l'URL de l'objet " . $courant['type'] . ' '
 					. $courant['id_objet'] . " qui a maintenant l'url "
 					. $courant['url']);
 			}
-			$where_thisurl = "url=" . sql_quote($vieux['url']) . " AND id_parent=" . intval($vieux['id_parent']);
+			$where_thisurl = 'url=' . sql_quote($vieux['url']) . ' AND id_parent=' . intval($vieux['id_parent']);
 			// si oui on le chipe
 			sql_updateq('spip_urls', $set, $where_thisurl);
-			sql_updateq('spip_urls', array('date' => date('Y-m-d H:i:s')), $where_thisurl);
-			spip_log("reattribue url " . $vieux['url']
-				. " de " . $vieux['type'] . "#" . $vieux['id_objet'] . " (parent " . $vieux['id_parent'] . ")"
-				. " A " . $set['type'] . "#" . $set['id_objet'] . " (parent " . $set['id_parent'] . ")",
-				"urls" . _LOG_INFO_IMPORTANTE);
+			sql_updateq('spip_urls', ['date' => date('Y-m-d H:i:s')], $where_thisurl);
+			spip_log(
+				'reattribue url ' . $vieux['url']
+				. ' de ' . $vieux['type'] . '#' . $vieux['id_objet'] . ' (parent ' . $vieux['id_parent'] . ')'
+				. ' A ' . $set['type'] . '#' . $set['id_objet'] . ' (parent ' . $set['id_parent'] . ')',
+				'urls' . _LOG_INFO_IMPORTANTE
+			);
 		} // Sinon
 		else {
-
 			// Soit c'est un Come Back d'une ancienne url propre de l'objet
 			// Soit c'est un vrai conflit. Rajouter l'ID jusqu'a ce que ca passe,
 			// mais se casser avant que ca ne casse.
 
 			// il peut etre du a un changement de casse de l'url simplement
 			// pour ce cas, on reecrit systematiquement l'url en plus d'actualiser la date
-			$where = "type=" . sql_quote($set['type'])
-				. " AND id_objet=" . intval($set['id_objet'])
-				. " AND id_parent=" . intval($set['id_parent'])
-				. " AND url LIKE ";
+			$where = 'type=' . sql_quote($set['type'])
+				. ' AND id_objet=' . intval($set['id_objet'])
+				. ' AND id_parent=' . intval($set['id_parent'])
+				. ' AND url LIKE ';
 			if (
 				!is_dir(_DIR_RACINE . $set['url']) and !file_exists(_DIR_RACINE . $set['url'])
-				and $existing = sql_fetsel('*','spip_urls', $where . url_sql_quote_like($set['url']))
+				and $existing = sql_fetsel('*', 'spip_urls', $where . url_sql_quote_like($set['url']))
 			) {
-				$refresh = array(
+				$refresh = [
 					'url' => $set['url'],
 					'date' => date('Y-m-d H:i:s'),
-				);
+				];
 				// si c'est une URL avec langue est qu'ici on a pas de langue, on ecrase
 				if ($existing['langue']) {
-					if (!$set['langue']){
+					if (!$set['langue']) {
 						$refresh['langue'] = '';
 					}
-					elseif($set['langue'] !== $existing['langue']) {
+					elseif ($set['langue'] !== $existing['langue']) {
 						$set['url'] .= $separateur . $set['langue'];
 						return url_insert_replay($set, $confirmer, $separateur, $has_parent, $perma);
 					}
@@ -224,7 +233,7 @@ function url_insert(&$set, $confirmer, $separateur) {
 					}
 				}
 				sql_updateq('spip_urls', $refresh, $where . url_sql_quote_like($set['url']));
-				spip_log("refresh " . $set['type'] . " " . $set['id_objet'].' refresh:'.serialize($refresh), "urls");
+				spip_log('refresh ' . $set['type'] . ' ' . $set['id_objet'] . ' refresh:' . serialize($refresh), 'urls');
 				$redate = false;
 			} else {
 				$set['url'] .= $separateur . $set['id_objet'];
@@ -233,15 +242,19 @@ function url_insert(&$set, $confirmer, $separateur) {
 		}
 	}
 
-	$reset = array();
+	$reset = [];
 	// si on a fixe une langue pour cette URL mais qu'il n'y a pas d'URL generique pour cet objet (avec langue='')
 	// on retire la langue car c'est l'URL generique par defaut
 	if (!empty($set['langue'])) {
-		if (!sql_countsel('spip_urls',
-			"type=" . sql_quote($set['type'])
-			. " AND id_objet=" . intval($set['id_objet'])
-			. " AND id_parent=" . intval($set['id_parent'])
-			. " AND langue=" . sql_quote(''))){
+		if (
+			!sql_countsel(
+				'spip_urls',
+				'type=' . sql_quote($set['type'])
+				. ' AND id_objet=' . intval($set['id_objet'])
+				. ' AND id_parent=' . intval($set['id_parent'])
+				. ' AND langue=' . sql_quote('')
+			)
+		) {
 			$set['langue'] = $reset['langue'] = '';
 		}
 	} else {
@@ -251,20 +264,23 @@ function url_insert(&$set, $confirmer, $separateur) {
 		$reset['date'] = date('Y-m-d H:i:s');
 	}
 
-	$where_thisurl = 'url=' . sql_quote($set['url']) . " AND id_parent=" . intval($set['id_parent']); // maj
+	$where_thisurl = 'url=' . sql_quote($set['url']) . ' AND id_parent=' . intval($set['id_parent']); // maj
 	if ($reset) {
 		sql_updateq('spip_urls', $reset, $where_thisurl);
 	}
 
 	// si url perma, poser le flag sur la seule url qu'on vient de mettre (au sein de celles qui ont la meme langue)
 	if ($perma) {
-		sql_update('spip_urls', array('perma' => "($where_thisurl)"),
-			"type=" . sql_quote($set['type']) . " AND id_objet=" . intval($set['id_objet'])." AND langue=" . sql_quote($set['langue']));
+		sql_update(
+			'spip_urls',
+			['perma' => "($where_thisurl)"],
+			'type=' . sql_quote($set['type']) . ' AND id_objet=' . intval($set['id_objet']) . ' AND langue=' . sql_quote($set['langue'])
+		);
 	}
 
 	spip_log("Creation de l'url propre '" . $set['url'] . "' pour "
-		. $set['type'] . " " . $set['id_objet']
-		. " (parent [" . $set['id_parent'] . "] langue [" . $set['langue'] . "] perma [" . ($perma ? "1" : "0") . "])", "urls");
+		. $set['type'] . ' ' . $set['id_objet']
+		. ' (parent [' . $set['id_parent'] . '] langue [' . $set['langue'] . '] perma [' . ($perma ? '1' : '0') . '])', 'urls');
 
 	return true;
 }
@@ -281,8 +297,7 @@ function url_insert(&$set, $confirmer, $separateur) {
  */
 function url_insert_replay($set, $confirmer, $separateur, $has_parent, $perma) {
 	//var_dump('url_insert_replay');
-	if (strlen($set['url']) > 200) //serveur out ? retourner au mieux
-	{
+	if (strlen($set['url']) > 200) { //serveur out ? retourner au mieux
 		return false;
 	}
 	else {
@@ -304,7 +319,7 @@ function url_insert_replay($set, $confirmer, $separateur, $has_parent, $perma) {
  * @return string
  */
 function url_sql_quote_like($url) {
-	return sql_quote(str_replace(array("%", "_"), array("\\%", "\\_"), $url)) . " ESCAPE " . sql_quote('\\');
+	return sql_quote(str_replace(['%', '_'], ['\\%', '\\_'], $url)) . ' ESCAPE ' . sql_quote('\\');
 }
 
 /**
@@ -316,14 +331,17 @@ function url_sql_quote_like($url) {
  * @param int $id_parent
  * @param $url
  */
-function url_verrouiller($url, $id_parent=0) {
-	$where_thisurl = 'url=' . sql_quote($url) . " AND id_parent=" . intval($id_parent);
-	$row = sql_fetsel('*','spip_urls',$where_thisurl);
+function url_verrouiller($url, $id_parent = 0) {
+	$where_thisurl = 'url=' . sql_quote($url) . ' AND id_parent=' . intval($id_parent);
+	$row = sql_fetsel('*', 'spip_urls', $where_thisurl);
 
 	// on fait un update unique pour changer toutes les URLs concernees d'un coup
 	if ($row) {
-		sql_update('spip_urls', array('perma' => "($where_thisurl)"),
-			"type=" . sql_quote($row['type']) . " AND id_objet=" . intval($row['id_objet'])." AND langue=" . sql_quote($row['langue']));
+		sql_update(
+			'spip_urls',
+			['perma' => "($where_thisurl)"],
+			'type=' . sql_quote($row['type']) . ' AND id_objet=' . intval($row['id_objet']) . ' AND langue=' . sql_quote($row['langue'])
+		);
 	}
 }
 
@@ -334,19 +352,19 @@ function url_verrouiller($url, $id_parent=0) {
  * @param string $url
  * @param int $id_parent
  */
-function url_delete($objet, $id_objet, $url = "", $id_parent=0) {
-	$where = "id_objet=" . intval($id_objet) . " AND type=" . sql_quote($objet);
+function url_delete($objet, $id_objet, $url = '', $id_parent = 0) {
+	$where = 'id_objet=' . intval($id_objet) . ' AND type=' . sql_quote($objet);
 	if (strlen($url)) {
-		$where .= " AND url=" . sql_quote($url) . " AND id_parent=" . intval($id_parent);
+		$where .= ' AND url=' . sql_quote($url) . ' AND id_parent=' . intval($id_parent);
 	}
 
-	sql_delete("spip_urls", $where);
+	sql_delete('spip_urls', $where);
 
 	// si on a supprime une seule URL, s'assurer qu'on a toujours au moins une URL avec lang=''
-	$where = "id_objet=" . intval($id_objet) . " AND type=" . sql_quote($objet);
-	if (!$nb = sql_countsel('spip_urls',$where .' AND langue=\'\'')) {
-		if ($last = sql_fetsel('*','spip_urls',$where,'','perma=1 DESC, langue=\'\' DESC, id_parent=0 DESC, date DESC','0,1')) {
-			sql_updateq('spip_urls',array('langue'=>''),'url='.sql_quote($last['url']) . ' AND id_parent='.intval($last['id_parent']));
+	$where = 'id_objet=' . intval($id_objet) . ' AND type=' . sql_quote($objet);
+	if (!$nb = sql_countsel('spip_urls', $where . ' AND langue=\'\'')) {
+		if ($last = sql_fetsel('*', 'spip_urls', $where, '', 'perma=1 DESC, langue=\'\' DESC, id_parent=0 DESC, date DESC', '0,1')) {
+			sql_updateq('spip_urls', ['langue' => ''], 'url=' . sql_quote($last['url']) . ' AND id_parent=' . intval($last['id_parent']));
 		}
 	}
 }

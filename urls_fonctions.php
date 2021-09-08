@@ -15,7 +15,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 
-function urls_is_url_editable($objet, $id_objet, $serveur='') {
+function urls_is_url_editable($objet, $id_objet, $serveur = '') {
 	include_spip('base/objets');
 
 	// si l'objet est publie, l'url est editable
@@ -32,7 +32,7 @@ function urls_is_url_editable($objet, $id_objet, $serveur='') {
 	}
 
 	// si il y a des urls existantes, l'url est editable
-	if (sql_countsel('spip_urls', 'type='.sql_quote($objet).' AND id_objet='.intval($id_objet))) {
+	if (sql_countsel('spip_urls', 'type=' . sql_quote($objet) . ' AND id_objet=' . intval($id_objet))) {
 		return true;
 	}
 
