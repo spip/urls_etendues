@@ -22,7 +22,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * @return array
  */
 function formulaires_editer_url_objet_charger_dist($type, $id) {
-	$valeurs = array('url' => '', '_objet' => $type, '_id_objet' => $id);
+	$valeurs = ['url' => '', '_objet' => $type, '_id_objet' => $id];
 
 	return $valeurs;
 }
@@ -38,14 +38,16 @@ function formulaires_editer_url_objet_charger_dist($type, $id) {
  * @return array
  */
 function formulaires_editer_url_objet_verifier_dist($type, $id) {
-	$erreurs = array();
+	$erreurs = [];
 	include_spip('action/editer_url');
 	$langue = '';
 	if (!$url = _request('url')) {
 		$erreurs['url'] = _T('info_obligatoire');
 	} else {
-		if (preg_match(";^([a-z_]{2,9}):;", $url, $m)
-		  and url_verifier_langue($m[1])) {
+		if (
+			preg_match(';^([a-z_]{2,9}):;', $url, $m)
+			and url_verifier_langue($m[1])
+		) {
 			$langue = trim($m[1]);
 			$url = substr($url, strlen($m[0]));
 		}
@@ -66,7 +68,7 @@ function formulaires_editer_url_objet_verifier_dist($type, $id) {
 			$url_clean = url_nettoyer($url, 255);
 		}
 		if (!isset($erreurs['url']) and $url != $url_clean) {
-			set_request('url', ($langue?"$langue:":"") . $url_clean);
+			set_request('url', ($langue ? "$langue:" : '') . $url_clean);
 			$erreurs['url'] = _T('urls:verifier_url_nettoyee');
 		}
 	}
@@ -82,22 +84,25 @@ function formulaires_editer_url_objet_verifier_dist($type, $id) {
  * @return array
  */
 function formulaires_editer_url_objet_traiter_dist($type, $id) {
-	$valeurs = array('editable' => true);
+	$valeurs = ['editable' => true];
 	include_spip('action/editer_url');
 
 	$url = _request('url');
 	$langue = '';
-	if (preg_match(";^([a-z_]{2,9}):;", $url, $m)
-	  and url_verifier_langue($m[1])) {
+	if (
+		preg_match(';^([a-z_]{2,9}):;', $url, $m)
+		and url_verifier_langue($m[1])
+	) {
 		$langue = trim($m[1]);
 		$url = substr($url, strlen($m[0]));
 	}
 
 	// les urls manuelles sont toujours permanentes
-	$set = array('url' => $url, 'type' => $type, 'id_objet' => $id, 'perma' => 1, 'langue' => $langue);
+	$set = ['url' => $url, 'type' => $type, 'id_objet' => $id, 'perma' => 1, 'langue' => $langue];
 
 	$type_urls = (isset($GLOBALS['type_urls']) ? $GLOBALS['type_urls'] : $GLOBALS['meta']['type_urls']);
-	if (include_spip("urls/$type_urls")
+	if (
+		include_spip("urls/$type_urls")
 		and function_exists($renseigner_url = "renseigner_url_$type_urls")
 		and $r = $renseigner_url($type, $id)
 		and isset($r['parent'])
@@ -105,16 +110,16 @@ function formulaires_editer_url_objet_traiter_dist($type, $id) {
 		$set['id_parent'] = $r['parent'];
 	}
 
-	$separateur = "-";
+	$separateur = '-';
 	if (defined('_url_sep_id')) {
 		$separateur = _url_sep_id;
 	}
 
 	if (url_insert($set, false, $separateur)) {
 		set_request('url');
-		$valeurs['message_ok'] = _T("urls:url_ajoutee");
+		$valeurs['message_ok'] = _T('urls:url_ajoutee');
 	} else {
-		$valeurs['message_erreur'] = _T("urls:url_ajout_impossible");
+		$valeurs['message_erreur'] = _T('urls:url_ajout_impossible');
 	}
 
 	return $valeurs;

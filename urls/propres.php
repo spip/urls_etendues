@@ -53,7 +53,7 @@ if (!defined('_debut_urls_propres')) {
 	define('_debut_urls_propres', '');
 }
 
-$config_urls_propres = isset($GLOBALS['meta']['urls_propres']) ? unserialize($GLOBALS['meta']['urls_propres']) : array();
+$config_urls_propres = isset($GLOBALS['meta']['urls_propres']) ? unserialize($GLOBALS['meta']['urls_propres']) : [];
 // pour choisir le caractere de separation titre-id en cas de doublon
 // (ne pas utiliser '/')
 if (!defined('_url_propres_sep_id')) {
@@ -81,7 +81,7 @@ if (!defined('_url_sep_id')) {
 // Les preg_match restent necessaires pour gerer les anciens signets.
 
 if (!defined('_MARQUEUR_URL')) {
-	define('_MARQUEUR_URL', serialize(array(
+	define('_MARQUEUR_URL', serialize([
 		'rubrique1' => '-',
 		'rubrique2' => '-',
 		'breve1' => '+',
@@ -92,7 +92,7 @@ if (!defined('_MARQUEUR_URL')) {
 		'auteur2' => '_',
 		'mot1' => '+-',
 		'mot2' => '-+'
-	)));
+	]));
 }
 
 // Retire les marqueurs de type dans une URL propre ancienne maniere
@@ -125,13 +125,15 @@ function urls_propres_creer_chaine_url($x) {
 	include_spip('inc/filtres');
 
 	include_spip('action/editer_url');
-	if (!$url = url_nettoyer(
-		$objet['titre'],
-		_URLS_PROPRES_MAX,
-		_URLS_PROPRES_MIN,
-		'-',
-		_url_minuscules ? 'spip_strtolower' : ''
-	)) {
+	if (
+		!$url = url_nettoyer(
+			$objet['titre'],
+			_URLS_PROPRES_MAX,
+			_URLS_PROPRES_MIN,
+			'-',
+			_url_minuscules ? 'spip_strtolower' : ''
+		)
+	) {
 		$url = $objet['type'] . $objet['id_objet'];
 	}
 
@@ -153,7 +155,7 @@ function declarer_url_propre($type, $id_objet) {
 	// Quand $type ne reference pas une table
 	if (!$desc) {
 		return false;
-	} 
+	}
 	$table = $desc['table'];
 	$champ_titre = $desc['titre'] ? $desc['titre'] : 'titre';
 	$col_id = $desc['key']['PRIMARY KEY'] ?? null;
@@ -196,7 +198,7 @@ function declarer_url_propre($type, $id_objet) {
 	// si url_propre connue mais avec id_parent non nul, essayer de reinserer tel quel avec id_parent=0
 	if ($url_propre and $row['id_parent']) {
 		include_spip('action/editer_url');
-		$set = array('url' => $url_propre, 'type' => $type, 'id_objet' => $id_objet, 'perma' => $row['perma']);
+		$set = ['url' => $url_propre, 'type' => $type, 'id_objet' => $id_objet, 'perma' => $row['perma']];
 		// si on arrive pas a reinserer tel quel, on annule url_propre pour forcer un recalcul d'url
 		if (!url_insert($set, false, _url_propres_sep_id)) {
 			$url_propre = '';
@@ -219,20 +221,21 @@ function declarer_url_propre($type, $id_objet) {
 	// Sinon, creer une URL
 	$url = pipeline(
 		'propres_creer_chaine_url',
-		array(
+		[
 			'data' => $url_propre,  // le vieux url_propre
 			'objet' => array_merge(
 				$row,
-				array('type' => $type, 'id_objet' => $id_objet)
+				['type' => $type, 'id_objet' => $id_objet]
 			)
-		)
+		]
 	);
 
 	// Eviter de tamponner les URLs a l'ancienne (cas d'un article
 	// intitule "auteur2")
 	include_spip('inc/urls');
 	$objets = urls_liste_objets();
-	if (preg_match(',^(' . $objets . ')[0-9]+$,', $url, $r)
+	if (
+		preg_match(',^(' . $objets . ')[0-9]+$,', $url, $r)
 		and $r[1] != $type
 	) {
 		$url = $url . _url_propres_sep_id . $id_objet;
@@ -250,7 +253,8 @@ function declarer_url_propre($type, $id_objet) {
 	}
 
 	// Verifier si l'utilisateur veut effectivement changer l'URL
-	if ($modifier_url
+	if (
+		$modifier_url
 		and CONFIRMER_MODIFIER_URL
 		and $url_propre
 		and $url != preg_replace('/' . preg_quote(_url_propres_sep_id, '/') . '.*/', '', $url_propre)
@@ -264,7 +268,7 @@ function declarer_url_propre($type, $id_objet) {
 		die("vous changez d'url ? $url_propre -&gt; $url");
 	}
 
-	$set = array('url' => $url, 'type' => $type, 'id_objet' => $id_objet);
+	$set = ['url' => $url, 'type' => $type, 'id_objet' => $id_objet];
 	include_spip('action/editer_url');
 	if (!url_insert($set, $confirmer, _url_propres_sep_id)) {
 		return $url_propre;
@@ -362,7 +366,8 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 
 	// Migration depuis anciennes URLs ?
 	// traiter les injections domain.tld/spip.php/n/importe/quoi/rubrique23
-	if ($GLOBALS['profondeur_url'] <= 0
+	if (
+		$GLOBALS['profondeur_url'] <= 0
 		and $_SERVER['REQUEST_METHOD'] != 'POST'
 	) {
 		include_spip('inc/urls');
@@ -372,15 +377,16 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 			$_id = id_table_objet($type);
 			$id_objet = $contexte[$_id];
 			$url_propre = generer_url_entite($id_objet, $type);
-			if (strlen($url_propre)
+			if (
+				strlen($url_propre)
 				and !strstr($url, $url_propre)
 				and (
 					objet_test_si_publie($type, $id_objet)
-					OR (defined('_VAR_PREVIEW') and _VAR_PREVIEW and autoriser('voir', $type, $id_objet))
+					or (defined('_VAR_PREVIEW') and _VAR_PREVIEW and autoriser('voir', $type, $id_objet))
 				)
 			) {
 				list(, $hash) = array_pad(explode('#', $url_propre), 2, null);
-				$args = array();
+				$args = [];
 				foreach (array_filter(explode('&', $suite)) as $fragment) {
 					if ($fragment != "$_id=$id_objet") {
 						$args[] = $fragment;
@@ -388,7 +394,7 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 				}
 				$url_redirect = generer_url_entite($id_objet, $type, join('&', array_filter($args)), $hash);
 
-				return array($contexte, $type, $url_redirect, $type);
+				return [$contexte, $type, $url_redirect, $type];
 			}
 		}
 	}
@@ -399,14 +405,16 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 
 	// Mode Query-String ?
 	$is_qs = false;
-	if (!$url_propre
+	if (
+		!$url_propre
 		and preg_match(',[?]([^=/?&]+)(&.*)?$,', $url, $r)
 	) {
 		$url_propre = $r[1];
 		$is_qs = true;
 	}
 
-	if (!$url_propre
+	if (
+		!$url_propre
 		or $url_propre == _DIR_RESTREINT_ABS
 		or $url_propre == _SPIP_SCRIPT
 	) {
@@ -446,8 +454,10 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 		$entite = $row['type'];
 
 		// Si l'url est vieux, donner le nouveau
-		if ($recent = declarer_url_propre($row['type'], $row['id_objet'])
-			and $recent !== $row['url']) {
+		if (
+			$recent = declarer_url_propre($row['type'], $row['id_objet'])
+			and $recent !== $row['url']
+		) {
 			// Mode compatibilite pour conserver la distinction -Rubrique-
 			if (_MARQUEUR_URL) {
 				$marqueur = unserialize(_MARQUEUR_URL);
@@ -487,5 +497,5 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 		}
 	}
 
-	return array($contexte, $entite, $url_redirect, $is_qs ? $entite : null);
+	return [$contexte, $entite, $url_redirect, $is_qs ? $entite : null];
 }

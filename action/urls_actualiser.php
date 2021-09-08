@@ -16,7 +16,7 @@
  * @package SPIP\Urls_etendues\Action
  **/
 
-if (!defined("_ECRIRE_INC_VERSION")) {
+if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
@@ -38,15 +38,16 @@ function action_urls_actualiser_dist() {
 	if (!defined('_VAR_URLS')) {
 		define('_VAR_URLS', true);
 	}
-	$type = $id = "";
-	$res = sql_select("type,id_objet", "spip_urls", "", "", "type,id_objet");
+	$type = $id = '';
+	$res = sql_select('type,id_objet', 'spip_urls', '', '', 'type,id_objet');
 	while ($row = sql_fetch($res)) {
-		if ($row['id_objet'] !== $id
+		if (
+			$row['id_objet'] !== $id
 			or $row['type'] !== $type
 		) {
 			$id = $row['id_objet'];
 			$type = $row['type'];
-			generer_url_entite($id, $type, "", "", true);
+			generer_url_entite($id, $type, '', '', true);
 		}
 	}
 }

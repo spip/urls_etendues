@@ -15,7 +15,8 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 function urls_afficher_fiche_objet($flux) {
-	if (isset($GLOBALS['meta']['urls_activer_controle'])
+	if (
+		isset($GLOBALS['meta']['urls_activer_controle'])
 		and $GLOBALS['meta']['urls_activer_controle'] == 'oui'
 		and $objet = $flux['args']['type']
 		and $id_objet = $flux['args']['id']
@@ -25,8 +26,11 @@ function urls_afficher_fiche_objet($flux) {
 		$p = strpos($flux['data'], '<!--/hd-->', $p);
 		//$p = strrpos(substr($flux['data'],0,$p),'<div');
 
-		$res = recuperer_fond('prive/objets/editer/url', array('id_objet' => $id_objet, 'objet' => $objet),
-			array('ajax' => true));
+		$res = recuperer_fond(
+			'prive/objets/editer/url',
+			['id_objet' => $id_objet, 'objet' => $objet],
+			['ajax' => true]
+		);
 		$flux['data'] = substr_replace($flux['data'], $res, $p, 0);
 	}
 
