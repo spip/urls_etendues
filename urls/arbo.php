@@ -785,7 +785,7 @@ function urls_arbo_dist($i, $entite, $args = '', $ancre = '') {
 				'spip_urls',
 				is_null($type)
 					? 'url=' . sql_quote($url_segment, '', 'TEXT')
-					: sql_in('url', ["$type/$url_segment", $type]),
+					: sql_in_quote('url', ["$type/$url_segment", $type], '', '', 'TEXT'),
 				'',
 				// en priorite celui qui a le bon parent
 				// puis la bonne langue puis la langue ''
