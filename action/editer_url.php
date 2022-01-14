@@ -74,7 +74,7 @@ function url_nettoyer($titre, $longueur_maxi, $longueur_min = 0, $separateur = '
 			$url = substr_replace(
 				$url,
 				rawurlencode($regs[0]),
-				strpos($url, $regs[0]),
+				strpos($url, (string) $regs[0]),
 				strlen($regs[0])
 			);
 		}

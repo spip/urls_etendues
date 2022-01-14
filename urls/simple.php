@@ -33,9 +33,9 @@ function _generer_url_simple($type, $id, $args = '', $ancre = '') {
 		}
 	}
 
-	$url = _debut_urls_simple . $type
+	$url = \_debut_urls_simple . $type
 		. '&' . id_table_objet($type) . '='
-		. $id . _terminaison_urls_page;
+		. $id . \_terminaison_urls_page;
 
 	if ($args) {
 		$args = strpos($url, '?') ? "&$args" : "?$args";

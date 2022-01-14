@@ -38,6 +38,7 @@ function formulaires_editer_url_objet_charger_dist($type, $id) {
  * @return array
  */
 function formulaires_editer_url_objet_verifier_dist($type, $id) {
+	$url_clean = [];
 	$erreurs = [];
 	include_spip('action/editer_url');
 	$langue = '';
@@ -52,7 +53,7 @@ function formulaires_editer_url_objet_verifier_dist($type, $id) {
 			$url = substr($url, strlen($m[0]));
 		}
 
-		$type_urls = (isset($GLOBALS['type_urls']) ? $GLOBALS['type_urls'] : $GLOBALS['meta']['type_urls']);
+		$type_urls = ($GLOBALS['type_urls'] ?? $GLOBALS['meta']['type_urls']);
 		if ($type_urls == 'arbo' and strpos($url, '/') !== false) {
 			$url = explode('/', $url);
 			if (count($url) > 2) {
@@ -100,7 +101,7 @@ function formulaires_editer_url_objet_traiter_dist($type, $id) {
 	// les urls manuelles sont toujours permanentes
 	$set = ['url' => $url, 'type' => $type, 'id_objet' => $id, 'perma' => 1, 'langue' => $langue];
 
-	$type_urls = (isset($GLOBALS['type_urls']) ? $GLOBALS['type_urls'] : $GLOBALS['meta']['type_urls']);
+	$type_urls = ($GLOBALS['type_urls'] ?? $GLOBALS['meta']['type_urls']);
 	if (
 		include_spip("urls/$type_urls")
 		and function_exists($renseigner_url = "renseigner_url_$type_urls")
@@ -112,7 +113,7 @@ function formulaires_editer_url_objet_traiter_dist($type, $id) {
 
 	$separateur = '-';
 	if (defined('_url_sep_id')) {
-		$separateur = _url_sep_id;
+		$separateur = \_url_sep_id;
 	}
 
 	if (url_insert($set, false, $separateur)) {

@@ -57,21 +57,21 @@ $config_urls_propres = isset($GLOBALS['meta']['urls_propres']) ? unserialize($GL
 // pour choisir le caractere de separation titre-id en cas de doublon
 // (ne pas utiliser '/')
 if (!defined('_url_propres_sep_id')) {
-	define('_url_propres_sep_id', isset($config_urls_propres['url_propres_sep_id']) ? $config_urls_propres['url_propres_sep_id'] : '-');
+	define('_url_propres_sep_id', $config_urls_propres['url_propres_sep_id'] ?? '-');
 }
 // option pour tout passer en minuscules
 if (!defined('_url_minuscules')) {
-	define('_url_minuscules', isset($config_urls_propres['url_minuscules']) ? $config_urls_propres['url_minuscules'] : 0);
+	define('_url_minuscules', $config_urls_propres['url_minuscules'] ?? 0);
 }
 if (!defined('_URLS_PROPRES_MAX')) {
-	define('_URLS_PROPRES_MAX', isset($config_urls_propres['URLS_PROPRES_MAX']) ? $config_urls_propres['URLS_PROPRES_MAX'] : 80);
+	define('_URLS_PROPRES_MAX', $config_urls_propres['URLS_PROPRES_MAX'] ?? 80);
 }
 if (!defined('_URLS_PROPRES_MIN')) {
-	define('_URLS_PROPRES_MIN', isset($config_urls_propres['URLS_PROPRES_MIN']) ? $config_urls_propres['URLS_PROPRES_MIN'] : 3);
+	define('_URLS_PROPRES_MIN', $config_urls_propres['URLS_PROPRES_MIN'] ?? 3);
 }
 
 if (!defined('_url_sep_id')) {
-	define('_url_sep_id', _url_propres_sep_id);
+	define('_url_sep_id', \_url_propres_sep_id);
 }
 
 // Ces chaines servaient de marqueurs a l'epoque ou les URL propres devaient
@@ -131,7 +131,7 @@ function urls_propres_creer_chaine_url($x) {
 			_URLS_PROPRES_MAX,
 			_URLS_PROPRES_MIN,
 			'-',
-			_url_minuscules ? 'spip_strtolower' : ''
+			\_url_minuscules ? 'spip_strtolower' : ''
 		)
 	) {
 		$url = $objet['type'] . $objet['id_objet'];
@@ -157,7 +157,7 @@ function declarer_url_propre($type, $id_objet) {
 		return false;
 	}
 	$table = $desc['table'];
-	$champ_titre = $desc['titre'] ? $desc['titre'] : 'titre';
+	$champ_titre = $desc['titre'] ?: 'titre';
 	$col_id = $desc['key']['PRIMARY KEY'] ?? null;
 	if (!$col_id) {
 		return false;
@@ -200,7 +200,7 @@ function declarer_url_propre($type, $id_objet) {
 		include_spip('action/editer_url');
 		$set = ['url' => $url_propre, 'type' => $type, 'id_objet' => $id_objet, 'perma' => $row['perma']];
 		// si on arrive pas a reinserer tel quel, on annule url_propre pour forcer un recalcul d'url
-		if (!url_insert($set, false, _url_propres_sep_id)) {
+		if (!url_insert($set, false, \_url_propres_sep_id)) {
 			$url_propre = '';
 		} else {
 			$url_propre = $row['url'] = $set['url'];
@@ -238,7 +238,7 @@ function declarer_url_propre($type, $id_objet) {
 		preg_match(',^(' . $objets . ')[0-9]+$,', $url, $r)
 		and $r[1] != $type
 	) {
-		$url = $url . _url_propres_sep_id . $id_objet;
+		$url = $url . \_url_propres_sep_id . $id_objet;
 	}
 
 	// Pas de changement d'url
@@ -257,7 +257,7 @@ function declarer_url_propre($type, $id_objet) {
 		$modifier_url
 		and CONFIRMER_MODIFIER_URL
 		and $url_propre
-		and $url != preg_replace('/' . preg_quote(_url_propres_sep_id, '/') . '.*/', '', $url_propre)
+		and $url != preg_replace('/' . preg_quote(\_url_propres_sep_id, '/') . '.*/', '', $url_propre)
 	) {
 		$confirmer = true;
 	} else {
@@ -270,7 +270,7 @@ function declarer_url_propre($type, $id_objet) {
 
 	$set = ['url' => $url, 'type' => $type, 'id_objet' => $id_objet];
 	include_spip('action/editer_url');
-	if (!url_insert($set, $confirmer, _url_propres_sep_id)) {
+	if (!url_insert($set, $confirmer, \_url_propres_sep_id)) {
 		return $url_propre;
 	} //serveur out ? retourner au mieux
 
@@ -290,8 +290,8 @@ function _generer_url_propre($type, $id, $args = '', $ancre = '') {
 	// Mode compatibilite pour conserver la distinction -Rubrique-
 	if (_MARQUEUR_URL) {
 		$marqueur = unserialize(_MARQUEUR_URL);
-		$marqueur1 = isset($marqueur[$type . '1']) ? $marqueur[$type . '1'] : ''; // debut '+-'
-		$marqueur2 = isset($marqueur[$type . '2']) ? $marqueur[$type . '2'] : ''; // fin '-+'
+		$marqueur1 = $marqueur[$type . '1'] ?? ''; // debut '+-'
+		$marqueur2 = $marqueur[$type . '2'] ?? ''; // fin '-+'
 	} else {
 		$marqueur1 = $marqueur2 = '';
 	}
@@ -305,11 +305,11 @@ function _generer_url_propre($type, $id, $args = '', $ancre = '') {
 	} // objet inconnu. raccourci ?
 
 	if ($propre) {
-		$url = _debut_urls_propres
+		$url = \_debut_urls_propres
 			. $marqueur1
 			. $propre
 			. $marqueur2
-			. _terminaison_urls_propres;
+			. \_terminaison_urls_propres;
 
 		// les urls de type /1234 sont interpretees comme urls courte vers article 1234
 		// on les encadre d'un - : /-1234-
@@ -373,19 +373,19 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 		include_spip('inc/urls');
 		$r = nettoyer_url_page($i, $contexte);
 		if ($r) {
-			list($contexte, $type, , , $suite) = $r;
+			[$contexte, $type, , , $suite] = $r;
 			$_id = id_table_objet($type);
 			$id_objet = $contexte[$_id];
 			$url_propre = generer_url_entite($id_objet, $type);
 			if (
 				strlen($url_propre)
-				and !strstr($url, $url_propre)
+				and !strstr($url, (string) $url_propre)
 				and (
 					objet_test_si_publie($type, $id_objet)
 					or (defined('_VAR_PREVIEW') and _VAR_PREVIEW and autoriser('voir', $type, $id_objet))
 				)
 			) {
-				list(, $hash) = array_pad(explode('#', $url_propre), 2, null);
+				[, $hash] = array_pad(explode('#', $url_propre), 2, null);
 				$args = [];
 				foreach (array_filter(explode('&', $suite)) as $fragment) {
 					if ($fragment != "$_id=$id_objet") {
