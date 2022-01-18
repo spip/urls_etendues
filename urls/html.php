@@ -42,7 +42,7 @@ define('URLS_HTML_EXEMPLE', 'article12.html');
 function _generer_url_html($type, $id, $args = '', $ancre = '') {
 	if ($generer_url_externe = charger_fonction("generer_url_$type", 'urls', true)) {
 		$url = $generer_url_externe($id, $args, $ancre);
-		if (null != $url) {
+		if (null !== $url) {
 			return $url;
 		}
 	}
