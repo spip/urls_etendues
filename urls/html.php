@@ -38,31 +38,41 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 # donner un exemple d'url pour le formulaire de choix
 define('URLS_HTML_EXEMPLE', 'article12.html');
 
-function _generer_url_html($type, $id, $args = '', $ancre = '') {
-	if ($generer_url_externe = charger_fonction("generer_url_$type", 'urls', true)) {
+/**
+ * Generer l'url d'un objet SPIP
+ * @param int $id
+ * @param string $objet
+ * @param string $args
+ * @param string $ancre
+ * @return string
+ */
+function urls_html_generer_url_objet_dist(int $id, string $objet, string $args = '', string $ancre = ''): string {
+
+	if ($generer_url_externe = charger_fonction_url($objet, 'defaut')) {
 		$url = $generer_url_externe($id, $args, $ancre);
-		if (null !== $url) {
+		// une url === null indique "je ne traite pas cette url, appliquez le calcul standard"
+		// une url vide est une url vide, ne rien faire de plus
+		if (!is_null($url)) {
 			return $url;
 		}
 	}
 
-	return _DIR_RACINE . $type . $id . '.html' . ($args ? "?$args" : '') . ($ancre ? "#$ancre" : '');
+	return _DIR_RACINE . $objet . $id . '.html' . ($args ? "?$args" : '') . ($ancre ? "#$ancre" : '');
 }
 
-// retrouver les parametres d'une URL dite "html"
-function urls_html_dist($i, $entite, $args = '', $ancre = '') {
 
-	if (is_numeric($i)) {
-		return _generer_url_html($entite, $i, $args, $ancre);
-	}
-
-	// recuperer les &debut_xx;
-	if (is_array($args)) {
-		$contexte = $args;
-	} else {
-		parse_str($args, $contexte);
-	}
-
+/**
+ * Decoder une url html
+ * retrouve le fond et les parametres d'une URL abregee
+ * le contexte deja existant est fourni dans args sous forme de tableau
+ *
+ * @param string $url
+ * @param string $entite
+ * @param array $contexte
+ * @return array
+ *   [$contexte_decode, $type, $url_redirect, $fond]
+ */
+function urls_html_dist(string $url, string $entite, array $contexte = []): array {
 
 	// traiter les injections du type domaine.org/spip.php/cestnimportequoi/ou/encore/plus/rubrique23
 	if ($GLOBALS['profondeur_url'] > 0 and $entite == 'sommaire') {
@@ -71,7 +81,7 @@ function urls_html_dist($i, $entite, $args = '', $ancre = '') {
 
 	// voir s'il faut recuperer le id_* implicite et les &debut_xx;
 	include_spip('inc/urls');
-	$r = nettoyer_url_page($i, $contexte);
+	$r = nettoyer_url_page($url, $contexte);
 	if ($r) {
 		array_pop($r); // nettoyer_url_page renvoie un argument de plus inutile ici
 		// il n'est pas necessaire de forcer le fond en 4eme arg car l'url n'est pas query string
@@ -91,15 +101,6 @@ function urls_html_dist($i, $entite, $args = '', $ancre = '') {
 	 */
 	// Si on est revenu en mode html, mais c'est une ancienne url_propre
 	// on ne redirige pas, on assume le nouveau contexte (si possible)
-	$url_propre = $i;
-	if ($url_propre) {
-		if ($GLOBALS['profondeur_url'] <= 0) {
-			$urls_anciennes = charger_fonction('propres', 'urls');
-		} else {
-			$urls_anciennes = charger_fonction('arbo', 'urls');
-		}
-
-		return $urls_anciennes($url_propre, $entite, $contexte);
-	}
+	return urls_transition_retrouver_anciennes_url($url, $entite, $contexte);
 	/* Fin du bloc compatibilite url-propres */
 }
