@@ -275,11 +275,21 @@ function declarer_url_propre($type, $id_objet) {
 	return $set['url'];
 }
 
-function _generer_url_propre($type, $id, $args = '', $ancre = '') {
+/**
+ * Generer l'url d'un objet SPIP
+ * @param int $id
+ * @param string $objet
+ * @param string $args
+ * @param string $ancre
+ * @return string
+ */
+function urls_propres_generer_url_objet_dist(int $id, string $objet, string $args = '', string $ancre = ''): string {
 
-	if ($generer_url_externe = charger_fonction("generer_url_$type", 'urls', true)) {
+	if ($generer_url_externe = charger_fonction_url($objet, 'defaut')) {
 		$url = $generer_url_externe($id, $args, $ancre);
-		if (null !== $url) {
+		// une url === null indique "je ne traite pas cette url, appliquez le calcul standard"
+		// une url vide est une url vide, ne rien faire de plus
+		if (!is_null($url)) {
 			return $url;
 		}
 	}
@@ -287,19 +297,20 @@ function _generer_url_propre($type, $id, $args = '', $ancre = '') {
 	// Mode compatibilite pour conserver la distinction -Rubrique-
 	if (_MARQUEUR_URL) {
 		$marqueur = unserialize(_MARQUEUR_URL);
-		$marqueur1 = $marqueur[$type . '1'] ?? ''; // debut '+-'
-		$marqueur2 = $marqueur[$type . '2'] ?? ''; // fin '-+'
+		$marqueur1 = $marqueur[$objet . '1'] ?? ''; // debut '+-'
+		$marqueur2 = $marqueur[$objet . '2'] ?? ''; // fin '-+'
 	} else {
 		$marqueur1 = $marqueur2 = '';
 	}
 	// fin
 
 	// Mode propre
-	$propre = declarer_url_propre($type, $id);
+	$propre = declarer_url_propre($objet, $id);
 
 	if ($propre === false) {
+		// objet inconnu. raccourci ?
 		return '';
-	} // objet inconnu. raccourci ?
+	}
 
 	if ($propre) {
 		$url = \_debut_urls_propres
@@ -323,8 +334,8 @@ function _generer_url_propre($type, $id, $args = '', $ancre = '') {
 	} else {
 		// objet connu mais sans possibilite d'URL lisible, revenir au defaut
 		include_spip('base/connect_sql');
-		$id_type = id_table_objet($type);
-		$url = _DIR_RACINE . get_spip_script('./') . '?' . _SPIP_PAGE . "=$type&$id_type=$id";
+		$id_objet = id_table_objet($objet);
+		$url = _DIR_RACINE . get_spip_script('./') . '?' . _SPIP_PAGE . "=$objet&$id_objet=$id";
 	}
 
 	// Ajouter les args
@@ -340,25 +351,20 @@ function _generer_url_propre($type, $id, $args = '', $ancre = '') {
 	return $url;
 }
 
-// retrouve le fond et les parametres d'une URL propre
-// ou produit une URL propre si on donne un parametre
-// @return array([contexte],[type],[url_redirect],[fond]) : url decodee
-function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
+/**
+ * Decoder une url propres
+ * retrouve le fond et les parametres d'une URL abregee
+ * le contexte deja existant est fourni dans args sous forme de tableau
+ *
+ * @param string $url
+ * @param string $entite
+ * @param array $contexte
+ * @return array([contexte],[type],[url_redirect],[fond]) : url decodee
+ */
+function urls_propres_dist(string $url, string $entite, array $contexte = []): array {
 
-	if (is_numeric($i)) {
-		return _generer_url_propre($entite, $i, $args, $ancre);
-	}
-
-	$url = $i;
 	$id_objet = $type = 0;
 	$url_redirect = null;
-	// recuperer les &debut_xx;
-	if (is_array($args)) {
-		$contexte = $args;
-	} else {
-		parse_str($args, $contexte);
-	}
-
 
 	// Migration depuis anciennes URLs ?
 	// traiter les injections domain.tld/spip.php/n/importe/quoi/rubrique23
@@ -367,12 +373,12 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 		and $_SERVER['REQUEST_METHOD'] != 'POST'
 	) {
 		include_spip('inc/urls');
-		$r = nettoyer_url_page($i, $contexte);
+		$r = nettoyer_url_page($url, $contexte);
 		if ($r) {
 			[$contexte, $type, , , $suite] = $r;
 			$_id = id_table_objet($type);
 			$id_objet = $contexte[$_id];
-			$url_propre = generer_url_entite($id_objet, $type);
+			$url_propre = generer_objet_url($id_objet, $type);
 			if (
 				strlen($url_propre)
 				and !strstr($url, (string) $url_propre)
@@ -388,7 +394,7 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 						$args[] = $fragment;
 					}
 				}
-				$url_redirect = generer_url_entite($id_objet, $type, join('&', array_filter($args)), $hash);
+				$url_redirect = generer_objet_url($id_objet, $type, join('&', array_filter($args)), $hash);
 
 				return [$contexte, $type, $url_redirect, $type];
 			}
@@ -414,14 +420,15 @@ function urls_propres_dist($i, $entite, $args = '', $ancre = '') {
 		or $url_propre == _DIR_RESTREINT_ABS
 		or $url_propre == _SPIP_SCRIPT
 	) {
-		return;
-	} // qu'est-ce qu'il veut ???
+		// qu'est-ce qu'il veut ???
+		return [];
+	}
 
 
 	// gerer le cas de retour depuis des urls arbos
 	// mais si url arbo ne trouve pas, on veut une 404 par securite
 	if ($GLOBALS['profondeur_url'] > 0 and !defined('_FORCE_URLS_PROPRES')) {
-		$urls_anciennes = charger_fonction('arbo', 'urls');
+		$urls_anciennes = charger_fonction_url('decoder', 'arbo');
 
 		return $urls_anciennes($url_propre, $entite, $contexte);
 	}
