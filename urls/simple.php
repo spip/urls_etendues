@@ -48,7 +48,6 @@ function _generer_url_simple($type, $id, $args = '', $ancre = '') {
 
 // retrouve le fond et les parametres d'une URL abregee
 // le contexte deja existant est fourni dans args sous forme de tableau ou query string
-// https://code.spip.net/@urls_page_dist
 function urls_simple_dist($i, &$entite, $args = '', $ancre = '') {
 	if (is_numeric($i)) {
 		include_spip('urls/page');

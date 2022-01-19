@@ -28,7 +28,6 @@ if (!defined('_MARQUEUR_URL')) {
 	define('_MARQUEUR_URL', false);
 }
 
-// https://code.spip.net/@urls_libres_dist
 function urls_libres_dist($i, &$entite, $args = '', $ancre = '') {
 	$f = charger_fonction('propres', 'urls');
 
