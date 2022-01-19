@@ -251,7 +251,7 @@ parameters:
 			path: urls/arbo.php
 
 		-
-			message: "#^Function sql_in not found\\.$#"
+			message: "#^Function sql_in_quote not found\\.$#"
 			count: 1
 			path: urls/arbo.php
 
