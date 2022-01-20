@@ -535,19 +535,21 @@ function declarer_url_arbo($type, $id_objet, $contexte = []) {
 	return declarer_url_arbo_rec($u['url'], $type, $u['parent'], $u['type_parent'], $contexte);
 }
 
+
 /**
- * Generer l'url arbo complete constituee des segments + debut + fin
- *
- * @param string $type
+ * Generer l'url d'un objet SPIP
  * @param int $id
+ * @param string $objet
  * @param string $args
  * @param string $ancre
  * @return string
  */
-function _generer_url_arbo($type, $id, $args = '', $ancre = '') {
-	if ($generer_url_externe = charger_fonction("generer_url_$type", 'urls', true)) {
+function urls_arbo_generer_url_objet_dist(int $id, string $objet, string $args = '', string $ancre = ''): string {
+	if ($generer_url_externe = charger_fonction_url($objet, 'defaut')) {
 		$url = $generer_url_externe($id, $args, $ancre);
-		if (null !== $url) {
+		// une url === null indique "je ne traite pas cette url, appliquez le calcul standard"
+		// une url vide est une url vide, ne rien faire de plus
+		if (!is_null($url)) {
 			return $url;
 		}
 	}
@@ -573,17 +575,17 @@ function _generer_url_arbo($type, $id, $args = '', $ancre = '') {
 	} elseif (\_url_arbo_multilang) {
 		$c['langue'] = \_url_arbo_multilang;
 	}
-	$propre = declarer_url_arbo($type, $id, $c);
+	$propre = declarer_url_arbo($objet, $id, $c);
 
 	// si le parent est fourni en contexte dans le $args, verifier si l'URL relative a ce parent est la meme ou non
-	$champ_parent = url_arbo_parent($type);
+	$champ_parent = url_arbo_parent($objet);
 	if (
 		$champ_parent
 		and $champ_parent = reset($champ_parent)
 		and isset($contexte[$champ_parent]) and $contexte[$champ_parent]
 	) {
 		$c['id_parent'] = $contexte[$champ_parent];
-		$propre_contexte = declarer_url_arbo($type, $id, $c);
+		$propre_contexte = declarer_url_arbo($objet, $id, $c);
 		// si l'URL est differente on la prend et on enleve l'argument de l'URL (redondance puisque parent defini par l'URL elle meme)
 		if ($propre_contexte !== $propre) {
 			$propre = $propre_contexte;
@@ -601,12 +603,12 @@ function _generer_url_arbo($type, $id, $args = '', $ancre = '') {
 		$url = \_debut_urls_arbo
 			. $debut_langue
 			. rtrim($propre, '/')
-			. url_arbo_terminaison($type);
+			. url_arbo_terminaison($objet);
 	} else {
 		// objet connu mais sans possibilite d'URL lisible, revenir au defaut
 		include_spip('base/connect_sql');
-		$id_type = id_table_objet($type);
-		$url = get_spip_script('./') . '?' . _SPIP_PAGE . "=$type&$id_type=$id";
+		$id_type = id_table_objet($objet);
+		$url = get_spip_script('./') . '?' . _SPIP_PAGE . "=$objet&$id_type=$id";
 	}
 
 	// Ajouter les args
@@ -624,70 +626,30 @@ function _generer_url_arbo($type, $id, $args = '', $ancre = '') {
 
 
 /**
- * API : retourner l'url d'un objet si i est numerique
- * ou decoder cette url si c'est une chaine
- * array([contexte],[type],[url_redirect],[fond]) : url decodee
+ * Decoder une url propres
+ * retrouve le fond et les parametres d'une URL abregee
+ * le contexte deja existant est fourni dans args sous forme de tableau
  *
- * @param string|int $i
+ * @param string $url
  * @param string $entite
- * @param string|array $args
- * @param string $ancre
- * @return array|string
+ * @param array $contexte
+ * @return array([contexte],[type],[url_redirect],[fond]) : url decodee
  */
-function urls_arbo_dist($i, $entite, $args = '', $ancre = '') {
-	if (is_numeric($i)) {
-		return _generer_url_arbo($entite, $i, $args, $ancre);
-	}
+function urls_arbo_dist(string $url, string $entite, array $contexte = []): array {
 
 	// traiter les injections du type domaine.org/spip.php/cestnimportequoi/ou/encore/plus/rubrique23
 	if ($GLOBALS['profondeur_url'] > 0 and $entite == 'sommaire') {
 		$entite = 'type_urls';
 	}
 
-	// recuperer les &debut_xx;
-	if (is_array($args)) {
-		$contexte = $args;
-		$args = http_build_query($contexte);
-	} else {
-		parse_str($args, $contexte);
-	}
-
-	$url = $i;
 	$id_objet = $type = 0;
 	$url_redirect = null;
 
 	// Migration depuis anciennes URLs ?
-	// traiter les injections domain.tld/spip.php/n/importe/quoi/rubrique23
-	if (
-		$GLOBALS['profondeur_url'] <= 0
-		and $_SERVER['REQUEST_METHOD'] != 'POST'
-	) {
-		include_spip('inc/urls');
-		$r = nettoyer_url_page($i, $contexte);
-		if ($r) {
-			[$contexte, $type, , , $suite] = $r;
-			$_id = id_table_objet($type);
-			$id_objet = $contexte[$_id];
-			$url_propre = generer_url_entite($id_objet, $type);
-			if (
-				strlen($url_propre)
-				and !strstr($url, (string) $url_propre)
-				and (
-					objet_test_si_publie($type, $id_objet)
-					or (defined('_VAR_PREVIEW') and _VAR_PREVIEW and autoriser('voir', $type, $id_objet))
-				)
-			) {
-				[, $hash] = array_pad(explode('#', $url_propre), 2, null);
-				$args = [];
-				foreach (array_filter(explode('&', $suite)) as $fragment) {
-					if ($fragment != "$_id=$id_objet") {
-						$args[] = $fragment;
-					}
-				}
-				$url_redirect = generer_url_entite($id_objet, $type, join('&', array_filter($args)), $hash);
-
-				return [$contexte, $type, $url_redirect, $type];
-			}
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+		$res = urls_transition_retrouver_anciennes_url_html($url, $entite, $contexte);
+		if ($res) {
+			return $res;
 		}
 	}
 	/* Fin compatibilite anciennes urls */
@@ -708,9 +670,9 @@ function urls_arbo_dist($i, $entite, $args = '', $ancre = '') {
 		or $url_propre == _DIR_RESTREINT_ABS
 		or $url_propre == _SPIP_SCRIPT
 	) {
-		return;
-	} // qu'est-ce qu'il veut ???
-
+		// qu'est-ce qu'il veut ???
+		return [];
+	}
 
 	include_spip('base/abstract_sql'); // chercher dans la table des URLS
 
@@ -726,6 +688,7 @@ function urls_arbo_dist($i, $entite, $args = '', $ancre = '') {
 
 	if (strlen($url_propre) and !preg_match(',^[^/]*[.]php,', $url_propre)) {
 		$parents_vus = [];
+		$args = http_build_query($contexte); // va servir pour d'eventuelles redirections
 
 		// recuperer tous les objets de larbo xxx/article/yyy/mot/zzzz
 		// on parcourt les segments de gauche a droite
@@ -849,7 +812,7 @@ function urls_arbo_dist($i, $entite, $args = '', $ancre = '') {
 				// en absolue, car assembler ne gere pas ce cas particulier
 				include_spip('inc/filtres_mini');
 				$col_id = id_table_objet($entite);
-				$url_new = generer_url_entite($contexte[$col_id], $entite, $args);
+				$url_new = generer_objet_url($contexte[$col_id], $entite, $args);
 				// securite contre redirection infinie
 				if (
 					$url_new !== $url_propre
@@ -896,9 +859,7 @@ function urls_arbo_dist($i, $entite, $args = '', $ancre = '') {
 			($entite == '' or $entite == 'type_urls')
 			and $GLOBALS['profondeur_url'] <= 0
 		) {
-			$urls_anciennes = charger_fonction('propres', 'urls');
-
-			return $urls_anciennes($url_propre, $entite, $contexte);
+			return urls_transition_retrouver_anciennes_url_propres($url, $entite, $contexte);
 		}
 	}
 	if ($entite == '' or $entite == 'type_urls' /* compat .htaccess 2.0 */) {
