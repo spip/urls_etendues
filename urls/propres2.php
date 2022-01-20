@@ -15,7 +15,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 } // securiser
 
 /*
-Ce jeu d'URLs est une variation de inc-urls-propres, qui ajoute
+Ce jeu d'URLs est une variation de urls/propres, qui ajoute
 le suffixe '.html' aux adresses ;
 */
 
@@ -28,8 +28,31 @@ if (!defined('_terminaison_urls_propres')) {
 	define('_terminaison_urls_propres', '.html');
 }
 
-function urls_propres2_dist($i, &$entite, $args = '', $ancre = '') {
-	$f = charger_fonction('propres', 'urls');
+/**
+ * Generer l'url d'un objet SPIP
+ * @param int $id
+ * @param string $objet
+ * @param string $args
+ * @param string $ancre
+ * @return string
+ */
+function urls_propres2_generer_url_objet_dist(int $id, string $objet, string $args = '', string $ancre = ''): string {
+	$generer = charger_fonction_url('objet', 'propres');
+	return $generer($id, $objet, $args, $ancre);
+}
 
-	return $f($i, $entite, $args, $ancre);
+/**
+ * Decoder une url propres2
+ * retrouve le fond et les parametres d'une URL abregee
+ * le contexte deja existant est fourni dans args sous forme de tableau
+ *
+ * @param string $url
+ * @param string $entite
+ * @param array $contexte
+ * @return array([contexte],[type],[url_redirect],[fond]) : url decodee
+ */
+function urls_propres2_dist(string $url, string $entite, array $contexte = []): array {
+	$decoder = charger_fonction_url('decoder', 'propres');
+
+	return $decoder($url, $entite, $contexte);
 }
