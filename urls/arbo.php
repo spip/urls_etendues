@@ -163,7 +163,23 @@ function url_arbo_parent($type) {
  * @param string $type
  * @return string
  */
-function url_arbo_terminaison($type) {
+function url_arbo_terminaison(string $type): string {
+	$terminaison_types = url_arbo_terminaisons_par_type();
+
+	if (isset($terminaison_types[$type])) {
+		return $terminaison_types[$type];
+	} elseif (isset($terminaison_types['defaut'])) {
+		return $terminaison_types['defaut'];
+	}
+
+	return '';
+}
+
+/**
+ * La liste des terminaisons par type, eventuellement personalisee par la globale url_arbo_terminaisons
+ * @return array
+ */
+function url_arbo_terminaisons_par_type(): array {
 	static $terminaison_types = null;
 	if ($terminaison_types == null) {
 		$terminaison_types = [
@@ -175,18 +191,10 @@ function url_arbo_terminaison($type) {
 			$terminaison_types = array_merge($terminaison_types, $GLOBALS['url_arbo_terminaisons']);
 		}
 	}
-	// si c'est un appel avec type='' c'est pour avoir la liste des terminaisons
-	if (!$type) {
-		return array_unique(array_values($terminaison_types));
-	}
-	if (isset($terminaison_types[$type])) {
-		return $terminaison_types[$type];
-	} elseif (isset($terminaison_types['defaut'])) {
-		return $terminaison_types['defaut'];
-	}
 
-	return '';
+	return $terminaison_types;
 }
+
 
 /**
  * Definir le prefixe qui designe le type et qu'on utilise pour chaque objet
@@ -680,7 +688,7 @@ function urls_arbo_dist(string $url, string $entite, array $contexte = []): arra
 	$url_propre = rawurldecode($url_propre);
 
 	// Compatibilite avec .htm/.html et autres terminaisons
-	$t = array_diff(array_unique(array_merge(['.html', '.htm', '/'], url_arbo_terminaison(''))), ['']);
+	$t = array_diff(array_unique(array_merge(['.html', '.htm', '/'], url_arbo_terminaisons_par_type())), ['']);
 	if (count($t)) {
 		$url_propre = preg_replace('{('
 			. implode('|', array_map('preg_quote', $t)) . ')$}i', '', $url_propre);
