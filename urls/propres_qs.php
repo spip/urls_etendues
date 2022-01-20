@@ -15,7 +15,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 } // securiser
 
 /*
-Ce jeu d'URLs est une variante de inc-urls-propres, qui ajoute
+Ce jeu d'URLs est une variante de urls/propres, qui ajoute
 le prefixe './?' aux adresses, ce qui permet de l'utiliser en
 mode "Query-String", sans .htaccess ;
 
@@ -37,8 +37,32 @@ if (!defined('_terminaison_urls_propres')) {
 
 defined('_debut_urls_propres') || define('_debut_urls_propres', './?');
 
-function urls_propres_qs_dist($i, &$entite, $args = '', $ancre = '') {
-	$f = charger_fonction('propres', 'urls');
+/**
+ * Generer l'url d'un objet SPIP
+ * @param int $id
+ * @param string $objet
+ * @param string $args
+ * @param string $ancre
+ * @return string
+ */
+function urls_propres_qs_generer_url_objet_dist(int $id, string $objet, string $args = '', string $ancre = ''): string {
+	$generer = charger_fonction_url('objet', 'propres');
+	return $generer($id, $objet, $args, $ancre);
+}
 
-	return $f($i, $entite, $args, $ancre);
+
+/**
+ * Decoder une url propres en query string
+ * retrouve le fond et les parametres d'une URL abregee
+ * le contexte deja existant est fourni dans args sous forme de tableau
+ *
+ * @param string $url
+ * @param string $entite
+ * @param array $contexte
+ * @return array([contexte],[type],[url_redirect],[fond]) : url decodee
+ */
+function urls_propres_qs_dist(string $url, string $entite, array $contexte = []): array {
+	$decoder = charger_fonction_url('decoder', 'propres');
+
+	return $decoder($url, $entite, $contexte);
 }
