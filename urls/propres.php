@@ -367,37 +367,10 @@ function urls_propres_dist(string $url, string $entite, array $contexte = []): a
 	$url_redirect = null;
 
 	// Migration depuis anciennes URLs ?
-	// traiter les injections domain.tld/spip.php/n/importe/quoi/rubrique23
-	if (
-		$GLOBALS['profondeur_url'] <= 0
-		and $_SERVER['REQUEST_METHOD'] != 'POST'
-	) {
-		include_spip('inc/urls');
-		$r = nettoyer_url_page($url, $contexte);
-		if ($r) {
-			[$contexte, $type, , , $suite] = $r;
-			$_id = id_table_objet($type);
-			$id_objet = $contexte[$_id];
-			$url_propre = generer_objet_url($id_objet, $type);
-			if (
-				strlen($url_propre)
-				and !strstr($url, (string) $url_propre)
-				and (
-					objet_test_si_publie($type, $id_objet)
-					or (defined('_VAR_PREVIEW') and _VAR_PREVIEW and autoriser('voir', $type, $id_objet))
-				)
-			) {
-				[, $hash] = array_pad(explode('#', $url_propre), 2, null);
-				$args = [];
-				foreach (array_filter(explode('&', $suite)) as $fragment) {
-					if ($fragment != "$_id=$id_objet") {
-						$args[] = $fragment;
-					}
-				}
-				$url_redirect = generer_objet_url($id_objet, $type, join('&', array_filter($args)), $hash);
-
-				return [$contexte, $type, $url_redirect, $type];
-			}
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+		$res = urls_transition_retrouver_anciennes_url_html($url, $entite, $contexte);
+		if ($res) {
+			return $res;
 		}
 	}
 	/* Fin compatibilite anciennes urls */
