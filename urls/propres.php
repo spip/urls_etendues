@@ -361,7 +361,7 @@ function urls_propres_generer_url_objet_dist(int $id, string $objet, string $arg
  * @param array $contexte
  * @return array([contexte],[type],[url_redirect],[fond]) : url decodee
  */
-function urls_propres_dist(string $url, string $entite, array $contexte = []): array {
+function urls_propres_decoder_url_dist(string $url, string $entite, array $contexte = []): array {
 
 	$id_objet = $type = 0;
 	$url_redirect = null;

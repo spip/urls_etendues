@@ -61,7 +61,7 @@ function urls_propres_qs_generer_url_objet_dist(int $id, string $objet, string $
  * @param array $contexte
  * @return array([contexte],[type],[url_redirect],[fond]) : url decodee
  */
-function urls_propres_qs_dist(string $url, string $entite, array $contexte = []): array {
+function urls_propres_qs_decoder_url_dist(string $url, string $entite, array $contexte = []): array {
 	$decoder = charger_fonction_url('decoder', 'propres');
 
 	return $decoder($url, $entite, $contexte);
