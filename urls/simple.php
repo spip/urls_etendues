@@ -65,7 +65,7 @@ function urls_simple_generer_url_objet_dist(int $id, string $objet, string $args
  * @return array
  *   [$contexte_decode, $type, $url_redirect, $fond]
  */
-function urls_simple_dist(string $url, string $entite, array $contexte = []): array {
+function urls_simple_decoder_url_dist(string $url, string $entite, array $contexte = []): array {
 
 	// traiter les injections du type domaine.org/spip.php/cestnimportequoi/ou/encore/plus/rubrique23
 	if ($GLOBALS['profondeur_url'] > 0 and $entite == 'sommaire') {
