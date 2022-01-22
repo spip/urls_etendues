@@ -47,7 +47,7 @@ function action_urls_actualiser_dist() {
 		) {
 			$id = $row['id_objet'];
 			$type = $row['type'];
-			generer_url_entite($id, $type, '', '', true);
+			generer_objet_url($id, $type, '', '', true);
 		}
 	}
 }

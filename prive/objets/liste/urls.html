@@ -8,7 +8,7 @@
 [(#VAL{_AJAX}|defined|et{#CONST{_AJAX}})
 <script type="text/javascript">if (window.jQuery) jQuery(function(){
 [(#TYPE|urls_is_url_editable{#ID_OBJET}|oui)
-	jQuery('#url-#TYPE-#ID_OBJET').html('[(#ID_OBJET|generer_url_entite{#TYPE,'','',#EVAL{true}}|url_absolue|texte_script)]');
+	jQuery('#url-#TYPE-#ID_OBJET').html('[(#ID_OBJET|generer_objet_url{#TYPE,'','',#EVAL{true}}|url_absolue|texte_script)]');
 	jQuery('.formulaire_editer_url_objet .reponse_formulaire_ok').remove();
 ][(#TYPE|urls_is_url_editable{#ID_OBJET}|non)
 	jQuery('#url-#TYPE-#ID_OBJET').ajaxReload();
@@ -37,7 +37,7 @@
 		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})]">
 			<td class='perma'>[(#PERMA|?{#CHEMIN_IMAGE{cadenas-16.png}|balise_img})]</td>
 			<td class='url principale'>#URL</td>
-			<td class='objet'><a href="[(#ID_OBJET|generer_url_entite{#TYPE})]">[(#TYPE|objet_info{texte_objet}|_T)]&nbsp;#ID_OBJET</a></td>
+			<td class='objet'><a href="[(#ID_OBJET|generer_objet_url{#TYPE})]">[(#TYPE|objet_info{texte_objet}|_T)]&nbsp;#ID_OBJET</a></td>
 			<td class='parent'>[(#ID_PARENT|?{#ID_PARENT})]</td>
 			<td class='langue secondaire'>#LANGUE</td>
 			<td class='date secondaire'>[(#DATE|affdate_jourcourt)]</td>
