@@ -25,7 +25,7 @@ function urls_is_url_editable($objet, $id_objet, $serveur = '') {
 
 	// si l'objet est propose, l'url est editable
 	// TODO : il faudrait tester que l'objet et previsualisable en fait
-	$statut = generer_info_entite($id_objet, $objet, 'statut');
+	$statut = generer_objet_info($id_objet, $objet, 'statut');
 
 	if ($statut === 'prop') {
 		return true;
