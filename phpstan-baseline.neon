@@ -111,7 +111,7 @@ parameters:
 			path: action/urls_actualiser.php
 
 		-
-			message: "#^Function generer_url_entite not found\\.$#"
+			message: "#^Function generer_objet_url not found\\.$#"
 			count: 1
 			path: action/urls_actualiser.php
 
@@ -187,7 +187,7 @@ parameters:
 
 		-
 			message: "#^Function autoriser not found\\.$#"
-			count: 2
+			count: 1
 			path: urls/arbo.php
 
 		-
@@ -197,7 +197,12 @@ parameters:
 
 		-
 			message: "#^Function charger_fonction not found\\.$#"
-			count: 4
+			count: 2
+			path: urls/arbo.php
+
+		-
+			message: "#^Function charger_fonction_url not found\\.$#"
+			count: 1
 			path: urls/arbo.php
 
 		-
@@ -206,8 +211,8 @@ parameters:
 			path: urls/arbo.php
 
 		-
-			message: "#^Function generer_url_entite not found\\.$#"
-			count: 3
+			message: "#^Function generer_objet_url not found\\.$#"
+			count: 1
 			path: urls/arbo.php
 
 		-
@@ -217,22 +222,12 @@ parameters:
 
 		-
 			message: "#^Function id_table_objet not found\\.$#"
-			count: 4
+			count: 3
 			path: urls/arbo.php
 
 		-
 			message: "#^Function include_spip not found\\.$#"
-			count: 12
-			path: urls/arbo.php
-
-		-
-			message: "#^Function nettoyer_url_page not found\\.$#"
-			count: 1
-			path: urls/arbo.php
-
-		-
-			message: "#^Function objet_test_si_publie not found\\.$#"
-			count: 1
+			count: 11
 			path: urls/arbo.php
 
 		-
@@ -281,8 +276,18 @@ parameters:
 			path: urls/arbo.php
 
 		-
-			message: "#^Function charger_fonction not found\\.$#"
-			count: 3
+			message: "#^Function urls_transition_retrouver_anciennes_url_html not found\\.$#"
+			count: 1
+			path: urls/arbo.php
+
+		-
+			message: "#^Function urls_transition_retrouver_anciennes_url_propres not found\\.$#"
+			count: 1
+			path: urls/arbo.php
+
+		-
+			message: "#^Function charger_fonction_url not found\\.$#"
+			count: 1
 			path: urls/html.php
 
 		-
@@ -296,8 +301,13 @@ parameters:
 			path: urls/html.php
 
 		-
-			message: "#^Function charger_fonction not found\\.$#"
+			message: "#^Function urls_transition_retrouver_anciennes_url_propres not found\\.$#"
 			count: 1
+			path: urls/html.php
+
+		-
+			message: "#^Function charger_fonction_url not found\\.$#"
+			count: 2
 			path: urls/libres.php
 
 		-
@@ -312,16 +322,16 @@ parameters:
 
 		-
 			message: "#^Function autoriser not found\\.$#"
-			count: 2
+			count: 1
 			path: urls/propres.php
 
 		-
 			message: "#^Function charger_fonction not found\\.$#"
-			count: 3
+			count: 1
 			path: urls/propres.php
 
 		-
-			message: "#^Function generer_url_entite not found\\.$#"
+			message: "#^Function charger_fonction_url not found\\.$#"
 			count: 2
 			path: urls/propres.php
 
@@ -332,22 +342,12 @@ parameters:
 
 		-
 			message: "#^Function id_table_objet not found\\.$#"
-			count: 3
+			count: 2
 			path: urls/propres.php
 
 		-
 			message: "#^Function include_spip not found\\.$#"
-			count: 9
-			path: urls/propres.php
-
-		-
-			message: "#^Function nettoyer_url_page not found\\.$#"
-			count: 1
-			path: urls/propres.php
-
-		-
-			message: "#^Function objet_test_si_publie not found\\.$#"
-			count: 1
+			count: 8
 			path: urls/propres.php
 
 		-
@@ -381,13 +381,18 @@ parameters:
 			path: urls/propres.php
 
 		-
-			message: "#^Function charger_fonction not found\\.$#"
+			message: "#^Function urls_transition_retrouver_anciennes_url_html not found\\.$#"
 			count: 1
+			path: urls/propres.php
+
+		-
+			message: "#^Function charger_fonction_url not found\\.$#"
+			count: 2
 			path: urls/propres2.php
 
 		-
-			message: "#^Function charger_fonction not found\\.$#"
-			count: 1
+			message: "#^Function charger_fonction_url not found\\.$#"
+			count: 2
 			path: urls/propres_qs.php
 
 		-
@@ -396,8 +401,8 @@ parameters:
 			path: urls/simple.php
 
 		-
-			message: "#^Function charger_fonction not found\\.$#"
-			count: 3
+			message: "#^Function charger_fonction_url not found\\.$#"
+			count: 1
 			path: urls/simple.php
 
 		-
@@ -412,11 +417,16 @@ parameters:
 
 		-
 			message: "#^Function include_spip not found\\.$#"
-			count: 2
+			count: 1
 			path: urls/simple.php
 
 		-
 			message: "#^Function nettoyer_url_page not found\\.$#"
+			count: 1
+			path: urls/simple.php
+
+		-
+			message: "#^Function urls_transition_retrouver_anciennes_url_propres not found\\.$#"
 			count: 1
 			path: urls/simple.php
 
@@ -511,7 +521,7 @@ parameters:
 			path: urls_autoriser.php
 
 		-
-			message: "#^Function generer_info_entite not found\\.$#"
+			message: "#^Function generer_objet_info not found\\.$#"
 			count: 1
 			path: urls_fonctions.php
 
