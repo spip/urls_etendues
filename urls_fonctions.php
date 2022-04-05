@@ -14,9 +14,17 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-
-function urls_is_url_editable($objet, $id_objet, $serveur = '') {
+/**
+ * Indique si cet objet a une url éditable
+ *
+ * @param int|string $id_objet
+ */
+function urls_is_url_editable(?string $objet, $id_objet, string $serveur = ''): bool {
 	include_spip('base/objets');
+
+	if (!$objet or !$id_objet) {
+		return false;
+	}
 
 	// si l'objet est publie, l'url est editable
 	if (objet_test_si_publie($objet, $id_objet)) {
