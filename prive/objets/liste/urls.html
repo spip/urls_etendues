@@ -5,7 +5,8 @@
 	type,1
 }})
 ]
-[(#VAL{_AJAX}|defined|et{#CONST{_AJAX}})
+
+[(#CONST{_AJAX}|et{#TYPE}|et{#ID_OBJET})
 <script type="text/javascript">if (window.jQuery) jQuery(function(){
 [(#TYPE|urls_is_url_editable{#ID_OBJET}|oui)
 	jQuery('#url-#TYPE-#ID_OBJET').html('[(#ID_OBJET|generer_objet_url{#TYPE,'','',#EVAL{true}}|url_absolue|texte_script)]');
