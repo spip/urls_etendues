@@ -36,7 +36,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 } // securiser
 
 # donner un exemple d'url pour le formulaire de choix
-define('URLS_HTML_EXEMPLE', 'article12.html');
+defined('URLS_HTML_EXEMPLE') || define('URLS_HTML_EXEMPLE', 'article12.html');
 
 /**
  * Generer l'url d'un objet SPIP
