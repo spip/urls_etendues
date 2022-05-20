@@ -15,9 +15,9 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 } // securiser
 
 # donner un exemple d'url pour le formulaire de choix
-define('URLS_ARBO_EXEMPLE', '/article/titre');
+defined('URLS_ARBO_EXEMPLE') || define('URLS_ARBO_EXEMPLE', '/article/titre');
 # specifier le form de config utilise pour ces urls
-define('URLS_ARBO_CONFIG', 'arbo');
+defined('URLS_ARBO_CONFIG') || define('URLS_ARBO_CONFIG', 'arbo');
 
 // TODO: une interface permettant de verifier qu'on veut effectivment modifier
 // une adresse existante

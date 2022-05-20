@@ -20,9 +20,9 @@ le suffixe '.html' aux adresses ;
 */
 
 # donner un exemple d'url pour le formulaire de choix
-define('URLS_PROPRES2_EXEMPLE', 'Titre-de-l-article.html -Rubrique-.html');
+defined('URLS_PROPRES2_EXEMPLE') || define('URLS_PROPRES2_EXEMPLE', 'Titre-de-l-article.html -Rubrique-.html');
 # specifier le form de config utilise pour ces urls
-define('URLS_PROPRES2_CONFIG', 'propres');
+defined('URLS_PROPRES2_CONFIG') || define('URLS_PROPRES2_CONFIG', 'propres');
 
 if (!defined('_terminaison_urls_propres')) {
 	define('_terminaison_urls_propres', '.html');

@@ -27,9 +27,9 @@ preferables au mode 'propres_qs'.
 */
 
 # donner un exemple d'url pour le formulaire de choix
-define('URLS_PROPRES_QS_EXEMPLE', '?Titre-de-l-article');
+defined('URLS_PROPRES_QS_EXEMPLE') || define('URLS_PROPRES_QS_EXEMPLE', '?Titre-de-l-article');
 # specifier le form de config utilise pour ces urls
-define('URLS_PROPRES_QS_CONFIG', 'propres');
+defined('URLS_PROPRES_QS_CONFIG') || define('URLS_PROPRES_QS_CONFIG', 'propres');
 
 if (!defined('_terminaison_urls_propres')) {
 	define('_terminaison_urls_propres', '');
