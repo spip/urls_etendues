@@ -6,6 +6,6 @@
 
 - Fichier `README.md`
 
-### Fixed
+### Chaged
 
-- #4812 Éviter une erreur fatale lors de la suppression d’une URL depuis la page de contrôle
+- Compatible SPIP 4.2.0-dev
