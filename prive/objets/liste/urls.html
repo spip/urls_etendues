@@ -1,7 +1,7 @@
 [(#SET{defaut_tri,#ARRAY{
 	date,#ENV{date_sens,-1},
 	url,1,
-	id_objet,1
+	id_objet,1,
 	type,1
 }})
 ]
@@ -24,7 +24,7 @@
 [<caption><strong class="caption">(#ENV*{titre,#GRAND_TOTAL|singulier_ou_pluriel{urls:info_1_url,urls:info_nb_urls}})</strong></caption>]
 	<thead>
 		<tr class='first_row'>
-			<th class='perma' scope='col'></th>
+			<th class='perma' scope='col'>[(#TRI{perma,[(#CHEMIN_IMAGE{cadenas-16.png}|balise_img|inserer_attribut{title,<:urls:label_tri_perma:>})],ajax})]</th>
 			<th class='url principale' scope='col'>[(#TRI{url,<:urls:label_tri_url:>,ajax})]</th>
 			<th class='objet' scope='col'>[(#TRI{type,<:urls:info_objet:> <:info_numero_abbreviation:>,ajax})]</th>
 			<th class='parent' scope='col'><:urls:info_id_parent:></th>
