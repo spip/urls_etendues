@@ -32,8 +32,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	// L
 	'label_tri_date' => 'Date',
 	'label_tri_id' => 'ID',
-	'label_tri_url' => 'URL',
 	'label_tri_perma' => 'URLs verrouillées',
+	'label_tri_url' => 'URL',
 	'label_url' => 'Nouvelle URL',
 	'label_url_minuscules_0' => 'Conserver la casse du titre',
 	'label_url_minuscules_1' => 'Forcer les URLs en minuscules',
