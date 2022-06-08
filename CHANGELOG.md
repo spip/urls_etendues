@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- #4818 Tri possible par URLs verrouillées dans les listes d’URLs
+
+### Fixed
+
+- #4818 Coquille sens de tri sur la liste des urls
+
+
 ## [4.0.2] - 2022-05-20
 
 ### Fixed
