@@ -50,7 +50,8 @@
 		<traducteur nom="RealET" lien="https://trad.spip.net/auteur/realet" />
 	</langue>
 	<langue code="gl" url="https://trad.spip.net/tradlang_module/urls?lang_cible=gl" total="46" traduits="3" relire="0" modifs="0" nouveaux="43" pourcent="6.52" />
-	<langue code="it" url="https://trad.spip.net/tradlang_module/urls?lang_cible=it" total="46" traduits="45" relire="0" modifs="0" nouveaux="1" pourcent="97.83">
+	<langue code="it" url="https://trad.spip.net/tradlang_module/urls?lang_cible=it" total="46" traduits="46" relire="0" modifs="0" nouveaux="0" pourcent="100.00">
+		<traducteur nom="Alberto" lien="https://trad.spip.net/auteur/alberto" />
 		<traducteur nom="Julia14" lien="https://trad.spip.net/auteur/julia14" />
 		<traducteur nom="phante" lien="https://trad.spip.net/auteur/phante" />
 	</langue>
