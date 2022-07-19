@@ -34,6 +34,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	// L
 	'label_tri_date' => 'التاريخ',
 	'label_tri_id' => 'رقم التسلسل',
+	'label_tri_perma' => 'عناوين URL  المقفلة',
 	'label_tri_url' => 'عنوان URL',
 	'label_url' => 'عنوان URL جديد',
 	'label_url_minuscules_0' => 'الحفاظ على حجم أحرف العنوان',
