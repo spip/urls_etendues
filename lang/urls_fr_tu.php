@@ -33,6 +33,7 @@ Si une URL a changé, une nouvelle entrée sera créée (sans perdre les URLs d�
 	// L
 	'label_tri_date' => 'Date',
 	'label_tri_id' => 'ID',
+	'label_tri_perma' => 'URLs verrouillées',
 	'label_tri_url' => 'URL',
 	'label_url' => 'Nouvelle URL',
 	'label_url_minuscules_0' => 'Conserver la casse du titre',
