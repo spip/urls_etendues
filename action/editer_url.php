@@ -346,6 +346,24 @@ function url_verrouiller($url, $id_parent = 0) {
 }
 
 /**
+ * Déverrouiller une URL
+ * retirer le flag sur une unique url d'un objet
+ *
+ * @param string $url
+ * @param int $id_parent
+ * @param $url
+ */
+function url_liberer($url, $id_parent = 0) {
+	$where_thisurl = 'url=' . sql_quote($url) . ' AND id_parent=' . intval($id_parent);
+
+	sql_updateq(
+		'spip_urls',
+		['perma' => 0],
+		$where_thisurl
+	);
+}
+
+/**
  * Supprimer une URL
  * @param $objet
  * @param $id_objet
