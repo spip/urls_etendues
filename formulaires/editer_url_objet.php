@@ -98,8 +98,16 @@ function formulaires_editer_url_objet_traiter_dist($type, $id) {
 		$url = substr($url, strlen($m[0]));
 	}
 
-	// les urls manuelles sont toujours permanentes
-	$set = ['url' => $url, 'type' => $type, 'id_objet' => $id, 'perma' => 1, 'langue' => $langue];
+	// Suivant le bouton, c'est permanent ou pas
+	if (_request('verrouiller')) {
+		$perma = 1;
+	}
+	else {
+		$perma = 0;
+	}
+	
+	// La ligne à ajouter
+	$set = ['url' => $url, 'type' => $type, 'id_objet' => $id, 'perma' => $perma, 'langue' => $langue];
 
 	$type_urls = ($GLOBALS['type_urls'] ?? $GLOBALS['meta']['type_urls']);
 	if (

@@ -8,6 +8,11 @@
 		parametre : url d'action ]
 		#ACTION_FORMULAIRE
 		#SET{fl,urls}
+		
+		[(#REM) un bouton submit pour enregistrer qui sera declenche par le return
+		il ne doit pas etre hidden pour marcher dans safari
+		]
+		<div style="position:absolute;#LANG_LEFT:-10000px;" class="invisible-first-save-button"><input type='submit' class='btn submit' tabindex="-1" value='<:bouton_ajouter:>' /></div>
 	  <div class="editer-groupe">
 	  	#SET{name,url}#SET{erreurs,#ENV**{erreurs}|table_valeur{#GET{name}}}#SET{obli,'obligatoire'}
 	    <div class="editer editer_[(#GET{name})][ (#GET{obli})][ (#GET{erreurs}|oui)erreur]">
@@ -18,6 +23,11 @@
 	  </div>
 	  [(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
 	  <!--extra-->
-	  <p class='boutons'><span class='image_loading'></span><input type='submit' class='btn submit' value='<:bouton_enregistrer:>' /></p>
+	  
+	  <div class='boutons'>
+			<span class='image_loading'></span>
+			<button type="submit" class="btn_secondaire" name="verrouiller" value="oui">[(#CHEMIN_IMAGE{cadenas-16.svg}|balise_img)] <:urls:verrouiller_url:></button>
+			<input type='submit' class='btn submit' value='<:bouton_ajouter:>' />
+	  </div>
 	</div></form>
 </div>]
